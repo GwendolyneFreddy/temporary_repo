@@ -1,0 +1,771 @@
+/* ===================================================================================================================== *
+ *  v 6.0.0                                                                                                              *
+ *        A R R A Y S    ( T A B L E S )    :    I N S T A L L    N E W    C R E A T U R E    A N I M A T I O N S        *
+ *                                                                                                                       *
+ *                     Arrays used to add and install new creature animations (slots, bam files...)                      *
+ *                                                                                                                       *
+ *         Originally designed by Gwendolyne to make Infinity Animations installation compatible with EE games.          *
+ *                                                                                                                       *
+ * ===================================================================================================================== */
+
+/* ================================================================================================================================================================ *
+ *  LIST of ARRAYS - LISTE des TABLES                                                                                                                               *
+ * -----------------------------------                                                                                                                              *
+ *  - GW_anim_slots_ee              :   LISTS available slots ranges matching each animation type.                                                  => line #  32   *
+ *                                      LISTE les intervalles de slots disponibles pour chaque format d'animation.                                                  *
+ *  - GW_ee_missing_anims           :   DEFINES which missing animations must be installed in EE games.                                             => line # 239   *
+ *                                      DÉTERMINE quelles animations manquantes doivent être installées dans les jeux EE.                                           *
+ *  - GW_ee_missing_files           :   DEFINES where to find EE missing bam and/or wav animation files to installed them in EE games.              => line # 390   *
+ *                                      DÉTERMINE où se trouvent les fichiers manquants d'animation bam et/ou wav à installer dans les jeux EE.                     *
+ *  - GW_ia_animations              :   DEFINES where to find IA missing bam and/or wav animation files to installed them in EE games.              => line # 540   *
+ *                                      DÉTERMINE où se trouvent les fichiers bam et/ou wav d'animations IA à installer dans les jeux EE.                           *
+ *  - GW_moinesse_files             :   DEFINES where to find IA moinesse animation files and how to installed them in EE games.                    => line # 654   *
+ *                                      DÉTERMINE où se trouvent les fichiers des animations IA moinesse et comment les installer dans les jeux EE.                 *
+ *  - GW_bg1_paperdolls_files       :   DEFINES how to copy-rename paperdolls for BG1 characters animations in EE games.                            => line # 681   *
+ *                                      DÉFINIT comment copier et renommer les paperdolls des animations de personnages BG1 dans les jeux EE.                       *
+ *  - GW_ia_anim_ini_files_to_clone :   DEFINES how to create ini files clones and to fill them with new values (EE games).                         => line # 723   *
+ *                                      DÉFINIT comment créer des clones de fichiers ini et comment modifier leurs valeurs (jeux EE).                               *
+ * ================================================================================================================================================================ */
+
+
+/* =========================================================================================== *
+ *  ARRAY GW_anim_slots_ee : DEFINES available slots ranges matching each animation types.     *
+ * ------------------------------------------------------------------------------------------- *
+ *  Used by function GW_FIND_FREE_ANIM_SLOT to install new animation slots in EE games.        *
+ * ------------------------------------------------------------------------------------------- *
+ *  1st value = animation type.                                                                *
+ *  2nd value = lowest available creature animation slot for this animation type.              *
+ *  3rd value = how many slots to search inside each step.                                     *
+ *  4th value = how many slots to skip after each iteration, starting from the lowest one.     *
+ *  5th value = highest available creature animation slot for this animation type.             *
+ *  6th value = specific range to customize where to install new slots.                        *
+ * ------------------------------------------------------------------------------------------- *
+ *  Use: to install a BG1 SIMPLE MONSTER animation, you can                                    *
+ *   - Either choose the general 1st value label: BG1SM.                                       *
+ *   - Or choose a specific range: 1SM7100 will look for the first free available slot from    *
+ *     0x7110 to 0x7200, reading 2 slots every 0x10 step (0x7110, 0x7111, 0x7120, 0x7121...).  *
+ * =========================================================================================== */
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY GW_anim_slots_ee BEGIN
+//  type		slot_min   step	  iter	   slot_max	=> SERIE
+// -- 0 ---------- 1 ------ 2 ----- 3 -------- 4 ----------------
+
+//  CGameAnimationTypeEffect:              0x0000/0xfff
+
+/* ---------------------------------------------------------------------------- *
+ *  CGameAnimationTypeMonsterQuadrant:     0x1000/0x1ff                         *
+ * ---------------------------------------------------------------------------- *
+ *  BGI MONSTER LONG 4 PARTS                                                    *
+ *  EE: monster_quadrant, 4 quadrants, 9 directions, without extend directions  *
+ *  16 Directions un-mirrored (10 + 6E): G11-14, G21-24, G31-34                 *
+ * ---------------------------------------------------------------------------- */
+	BG1ML4,		0x1000,		0,		0,		0x1100	=> 1ML1000
+
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------ *
+ *  BGI MONSTER LONG 4 PARTS                                                                                                                              *
+ *  EE: monster_quadrant, 4 quadrants, 9 directions, with extend directions                                                                               *
+ *  16 Directions un-mirrored (10 + 6E): G11 G11E G12 G12E G13 G13E G14 G14E - G21 G21E G22 G22E G23 G23E G24 G24E - G31 G31E G32 G32E G33 G33E G34 G34E  *
+ * ------------------------------------------------------------------------------------------------------------------------------------------------------ */
+	BG1ML4EXT,	0x1100,		0,		0,		0x1200	=> 1ML1100
+
+/* ------------------------------------------------------------------------------- *
+ *  CGameAnimationTypeMonsterMulti:  0x1299/0xff (0x1398) - 0x1400/0xbff (0x2000)  *
+ * ------------------------------------------------------------------------------- *
+ *  DRAGON 9 PARTS     (EE: multi_new, 9 quadrants, split_bams)                    *
+ *  !!! Note: does not work in EE games !!!                                        *
+ * ------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------------------------------------------------------------------------------- *
+ *  CGameAnimationTypeMonsterMultiNew:      0x1300/0xff                                                                                                    *
+ * ------------------------------------------------------------------------------------------------------------------------------------------------------- *
+ *  BGII SPLIT 4 PARTS (EE: multi_new, 4 quadrants, split_bams)                                                                                            *
+ *  9 Directions mirrored:                                                                                                                                 *
+ *    G11 G12 G13 G14 - G111 G121 G131 G141 - G112 G122 G132 G142 - G113 G123 G133 G143 - G114 G124 G134 G144 - G115 G125 G135 G145                        *
+ *    G21 G22 G23 G24 - G211 G221 G231 G241 - G212 G222 G232 G242 - G213 G223 G233 G243 - G214 G224 G234 G244 - G215 G225 G235 G245 - G216 G226 G236 G246  *
+ * ------------------------------------------------------------------------------------------------------------------------------------------------------- */
+	BG2SPLIT4,	0x1300,		0,		0,		0x1400	=> 2SPL41
+
+/* ------------------------------------------------------------------------------- *
+ *  CGameAnimationTypeMonsterLayeredSpell:  0x2000/0xfff                           *
+ * ------------------------------------------------------------------------------- *
+ *  BGI SIMPLE CASTER BOW (EE: monster_layered, caster = 1)   : 0x2000 --> 0x20ff  *
+ *  BGI SIMPLE CASTER SWORD (EE: monster_layered, caster = 1) : 0x2200 --> 0x22ff  *
+ *  BGI SIMPLE CASTER (EE: monster_layered, caster = 1)       : 0x2300 --> 0x23ff  *
+ * ------------------------------------------------------------------------------- */
+
+//  CGameAnimationTypeMonsterAnkheg:        0x3000/0xfff
+//  CGameAnimationTypeTownStatic:           0x4000/0xfff
+
+/* ------------------------------------------------------------------------------------------------------------------- *
+ *  CGameAnimationTypeCharacterOld:  0x5400/0xff  -  0x5600/0x9ff                                                      *
+ *                                   0x6400/0xff  -  0x6600/0x9ff                                                      *
+ * ------------------------------------------------------------------------------------------------------------------- *
+ *  CHARACTER BGI					-	EE: character_old                                                              *
+ *  8 Directions un-mirrored (5 + 3E):  A1 A1E A2 A2E A3 A3E A4 A4E A5 A5E A6 A6E SA SAE SX SXE // 8 Seq. (A1 has 16)  *
+ *                                      CA CAE (62/64 Seq.) - G1 G1E (72 Seq.) - W2 W2E (8 Seq.)                       *
+ *                                      + Armour Levels (4) + Arbitrary (originally WP) Object anim. + CSHD.           *
+ * ------------------------------------------------------------------------------------------------------------------- */
+	BG1CHAR,	0x5600,		0,		0,		0x6000	=> 1CH5600
+	BG1CHAR,	0x6600,		0,		0,		0x7000	=> 1CH6600
+	BG1CHAR,	0x6400,		0,		0,		0x6500	=> 1CH6400
+	BG1CHAR,	0x5400,		0,		0,		0x5500	=> 1CH5400
+
+/* -------------------------------------------------------------------------------------- *
+ *  CGameAnimationTypeCharacter:    0x5000/0x3ff  -  0x5500/0xff                          *
+ *                                  0x6000/0x3ff  -  0x6500/0xff                          *
+ * -------------------------------------------------------------------------------------- *
+ *  CHARACTER BGII					-	EE: character                                     *
+ *  9 Directions mirrored:  A1 A2 A3 A4 A5 A6 A7 A8 A9 SA SS SX (9 Seq.)                  *
+ *                          CA (72 Seq.) - G1 (not split) // 99 Seq.                      *
+ *                          + Armour Levels (4) + Arbitrary (originally WQ) Object anim.  *
+ * -------------------------------------------------------------- */
+//  Excerpt from IA doc :
+//  This animation type differs from the one used for the original game files in that I've decided not to split the G animation series. It's exactly the same content, just kept in one file (see BGII SPLIT/BGII UNSPLIT). Essentially, if you'd like a duplicate or edit of a current character animation, you will have to join the G1 G11 G12... files into a single G1 file. This is done mainly to save override clutter (et makes it easier to create content to boot).
+	BG2CHAR,	0x6000,		6,	0x10,	0x6400	=> 2CH6000
+	BG2CHAR,	0x6500,		0,		0,	0x6600	=> 2CH6500
+	BG2CHAR,	0x5000,		0,		0,	0x5400	=> 2CH5000
+	BG2CHAR,	0x5500,		0,		0,	0x5600	=> 2CH5500
+
+/* ---------------------------------------------------------------- *
+ *  CGameAnimationTypeMonsterOld: (0x7000 + ([0x00,0x1f] << 4))/0x1 *
+ *                                (0x7000 + ([0x20,0x2f] << 4))/0x3 *
+ *                                (0x7000 + ([0x40,0x4f] << 4))/0x2 *
+ *                                (0x7000 + ([0x50,0x5f] << 4))/0x1 *
+ *                                (0x7000 + ([0x60,0x6f] << 4))/0xf *
+ *                                (0x7000 + ([0x70,0x7f] << 4))/0x2 *
+ *                                (0x7000 + ([0x80,0x8f] << 4))/0xf *
+ *                                (0x7000 + ([0x90,0xaf] << 4))/0x4 *
+ *                                (0x7000 + ([0xb0,0xbf] << 4))/0x6 *
+ *                                (0x7000 + ([0xc0,0xcf] << 4))/0x1 *
+ *                                (0x7000 + ([0xd0,0xdf] << 4))/0xf *
+ *                                (0x7000 + ([0xe0,0xef] << 4))/0x1 *
+ * ---------------------------------------------------------------- *
+ *  BG1 SIMPLE MONSTER				-	EE: monster_old             *
+ *  8 Directions un-mirrored (5 + 3E): G1 G1E G2 G2E                *
+ * ---------------------------------------------------------------- */
+	BG1SM,		0x7010,		2,		0x10,	0x7100	=> 1SM7000
+	BG1SM,		0x7110,		2,		0x10,	0x7200	=> 1SM7100
+	BG1SM,		0x7210,		4,		0x10,	0x72ff	=> 1SM7200
+	BG1SM,		0x7410,		3,		0x10,	0x74ff	=> 1SM7400
+	BG1SM,		0x7510,		2,		0x10,	0x75ff	=> 1SM7500
+	BG1SM,		0x7600,		0,		0,		0x7700	=> 1SM7600
+	BG1SM,		0x7710,		3,		0x10,	0x77ff	=> 1SM7700
+	BG1SM,		0x7800,		0,		0,		0x7900	=> 1SM7800
+	BG1SM,		0x7910,		5,		0x10,	0x7a00	=> 1SM7900
+	BG1SM,		0x7a10,		5,		0x10,	0x7b00	=> 1SM7a00
+	BG1SM,		0x7b10,		7,		0x10,	0x7c00	=> 1SM7b00
+	BG1SM,		0x7c10,		2,		0x10,	0x7d00	=> 1SM7c00
+	BG1SM,		0x7d00,		0,		0,		0x7e00	=> 1SM7d00
+	BG1SM,		0x7e10,		2,		0x10,	0x7f00	=> 1SM7e00
+
+/* ------------------------------------------------------------------------------ *
+ *  CGameAnimationTypeMonster:  (0x7002 + ([0x00,0x1f] << 4))/0xd                 *
+ *                              (0x7004 + ([0x20,0x2f] << 4))/0xb                 *
+ *                              (0x7000 + ([0x30,0x3f] << 4))/0xf                 *
+ *                              (0x7003 + ([0x40,0x4f] << 4))/0xc                 *
+ *                              (0x7002 + ([0x50,0x5f] << 4))/0xd                 *
+ *                              (0x7003 + ([0x70,0x7f] << 4))/0xc                 *
+ *                              (0x7005 + ([0x90,0xaf] << 4))/0xa                 *
+ *                              (0x7007 + ([0xb0,0xbf] << 4))/0x8                 *
+ *                              (0x7002 + ([0xc0,0xcf] << 4))/0xd                 *
+ *                              (0x7002 + ([0xe0,0xef] << 4))/0xd                 *
+ *                              (0x7000 + ([0xf0,0xff] << 4))/0xf                 *
+ * ------------------------------------------------------------------------------ *
+ *  BGII SPLIT						-	EE: monster, split_bams=1                 *
+ *    9 Directions mirrored: G1 G11 G12 G13 G14 G15 - G2 G21 G22 G23 G24 G25 G26  *
+ * ------------------------------------------------------------------------------ *
+ *  BGII UNSPLIT. EXT.				-	EE: monster, split_bams=0                 *
+ *    9 Directions mirrored: G1 G2                                                *
+ * ------------------------------------------------------------------------------ */
+	BG2SPLIT,	0x7300,		0,		0,		0x7400	=> 2SP7300
+	BG2SPLIT,	0x7f00,		0,		0,		0x8000	=> 2SP7f00
+	BG2SPLIT,	0x7002,		14,		0x10,	0x7100	=> 2SP7000
+	BG2SPLIT,	0x7102,		14,		0x10,	0x7200	=> 2SP7100
+	BG2SPLIT,	0x7204,		12,		0x10,	0x7300	=> 2SP7200
+	BG2SPLIT,	0x7403,		13,		0x10,	0x7500	=> 2SP7400
+	BG2SPLIT,	0x7502,		14,		0x10,	0x7600	=> 2SP7500
+	BG2SPLIT,	0x7703,		13,		0x10,	0x7800	=> 2SP7700	// accepts paperdoll
+	BG2SPLIT,	0x7905,		11,		0x10,	0x7a00	=> 2SP7900
+	BG2SPLIT,	0x7a05,		11,		0x10,	0x7b00	=> 2SP7a00
+	BG2SPLIT,	0x7b07,		9,		0x10,	0x7c00	=> 2SP7b00
+	BG2SPLIT,	0x7c02,		14,		0x10,	0x7d00	=> 2SP7c00
+	BG2SPLIT,	0x7e02,		14,		0x10,	0x7f00	=> 2SP7e00	// does not accept paperdolls
+	BG2SPLIT,	0x7f00,		13,		0x10,	0x7fff	=> 2SP7f00	// accepts paperdoll ?
+
+//  CGameAnimationTypeMonsterLayered:       0x8000/0xfff
+//  CGameAnimationTypeMonsterLarge:         0x9000/0xfff
+
+/* -------------------------------------------------------------- *
+ *  CGameAnimationTypeMonsterLarge16:       0xa000/0xfff          *
+ * -------------------------------------------------------------- *
+ *  BGI MONSTER LONG				-	EE: monster_large16       *
+ *  16 Directions un-mirrored (10 + 6E): G1 G1E G2 G2E G3 G3E     *
+ * -------------------------------------------------------------- */
+	BG1ML,		0xa000,		0,		0,		0xb000	=> 1MLa000
+	BG1ML,		0xa100,		0,		0,		0xa1ff	=> 1MLa100
+	BG1ML,		0xa200,		0,		0,		0xa2ff	=> 1MLa200
+
+//  CGameAnimationTypeAmbientStatic:        0xb000/0xfff
+//	B000's - B700's = [ambient_static]
+//  CGameAnimationTypeAmbient:              0xc000/0xfff
+//	C000's - CC00's = [ambient]
+
+/* -------------------------------------------------------------------- *
+ *  CGameAnimationTypeFlying:               0xd000/0xfff                *
+ * -------------------------------------------------------------------- *
+ *  RANDOMLY FLYING CREATURES		-	EE: flying                      *
+ *  similar to BGI SIMPLE MONSTER: 9 Directions mirrored: G1 (18 Seq.)  *
+ * -------------------------------------------------------------------- */
+	FLYING,		0xd000,		0,		0,		0xe000	=> 1SMd000 // 0xd0ff,	0,	0
+
+/* ----------------------------------------------------------------------------------------------------- *
+ *  CGameAnimationTypeMonsterIcewind:                0xe000/0xfff                                        *
+ *                      for non-EE engines only ==>  0xf000/0xfff                                        *
+ * ----------------------------------------------------------------------------------------------------- *
+ *  IWD								-	EE: monster_icewind                                              *
+ *  8 Directions un-mirrored (5 + 3E):                                                                   *
+ *    A1 A1E A2 A2E A3 A3E A4 A4E CA CAE DE DEE GH GHE GU GUE SC SCE SD SDE SL SLE SP SPE TW TWE WK WKE  *
+ * ----------------------------------------------------------------------------------------------------- */
+	IWD,		0xe000,		0,		0,		0xefff	=> IWD
+
+//  CGameAnimationTypePlanescapeCharacter:  0xf000/0xfff (PST:EE only)
+
+// -- 0 ---------- 1 ------ 2 ----- 3 -------- 4 ----------------
+//  type		slot_min   step	  iter	   slot_max	=> SERIE
+END
+
+
+/* ================================================================================================ *
+ *  ARRAY GW_ee_missing_anims : DEFINES which EE missing animations must be installed in EE games.  *
+ * ------------------------------------------------------------------------------------------------ *
+ * Used by macro gw_add_ee_missing_animations.                                                      *
+ * ------------------------------------------------------------------------------------------------ *
+ *  animation = animation's name (sub-folder in archives/ee_missing folder).                        *
+ *  1st value = BGEE  (Y = missing - N = not missing).                                              *
+ *  2nd value = BG2EE (Y = missing - N = not missing).                                              *
+ *  3rd value = SoD   (Y = missing - N = not missing).                                              *
+ *  4th value = IWDEE (Y = missing - N = not missing).                                              *
+ *  5th value = ID slot.                                                                            *
+ * ================================================================================================ */
+
+ACTION_CLEAR_ARRAY GW_ee_missing_anims
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY GW_ee_missing_anims BEGIN
+// BG  BG2 SoD IWD	 ID		=>	animation
+// -0 - 1 - 2 - 3 -- 4 ------------------------------------
+Y,	Y,	Y,	Y,	none	=>	_shared_sounds				// Restore missing missing sound clips
+N,	N,	N,	Y,	1100	=>	tanarri						// Restore missing Tanar'ri soundsets (TODO overwrite)
+	Y,	N,	N,	N,	1003	=>	WYVERN_WHITE_BIG			// Restore missing palette
+	Y,	N,	N,	Y,	1004	=>	WYRMLING_ALBINO				// Restore missing palette and ini file
+	Y,	N,	N,	N,	1102	=>	FIEND_BLUE					// Restore missing palette
+	Y,	N,	N,	N,	1103	=>	FIEND_GREEN					// Restore missing palette
+	Y,	N,	N,	N,	1104	=>	FIEND_RED					// Restore missing palette
+	Y,	N,	N,	Y,	1105	=>	DRAGON_GREEN_IWD			// Restore missing palette and ini file
+	Y,	N,	N,	N,	1200	=>	DRAGON_RED					// Restore missing bam files
+	Y,	N,	Y,	N,	1201	=>	DRAGON_BLACK				// Restore missing bam files
+	Y,	N,	Y,	N,	1202	=>	DRAGON_SILVER				// Restore missing bam and wav files
+	Y,	N,	Y,	N,	12nn	=>	DRAGONS_BG2					// Restore missing palettes
+	Y,	Y,	N,	Y,	4001	=>	NULL_ANIMATION				// Restore missing bam and ini files
+//	Y,	Y,	N,	Y,	6621	=>	__FIGHTER_FEMALE_HUMAN_BG1	// TODO CONFLICT with BG1 CHARACTERS ANIMATIONS
+	Y,	N,	N,	N,	7313	=>	ELEMENTAL_FIRE_SMALL_PURPLE	// Restore missing palettes
+	Y,	N,	N,	N,	7601	=>	MAUREZHI					// Restore missing palette
+	Y,	N,	N,	Y,	7602	=>	MYRLOCHAR					// Restore missing palette and ini file
+	Y,	N,	N,	Y,	7603	=>	DOG_GRAY					// Restore missing palette and ini file
+	Y,	N,	N,	Y,	7604	=>	SPIDER_WATER				// Restore missing palette and ini file
+	Y,	N,	N,	Y,	7801	=>	GIBBERLING_BROOD			// Restore missing palette and ini file
+	Y,	N,	N,	Y,	7802	=>	BLACK_PUDDING				// Restore missing palette and ini file
+	Y,	Y,	N,	N,	7d01	=>	SLAVE_FIGHTER				// Restore missing bam files
+	Y,	Y,	N,	N,	7d02	=>	CHICKEN_BROWN				// Restore missing bam files
+	N,	Y,	N,	Y,	7d04	=>	HARLOT_FIGHTER				// Restore missing bam and ini file
+	Y,	Y,	N,	Y,	7d05	=>	NOBLEMAN_FIGHTER			// Restore missing bam and ini file
+	Y,	Y,	N,	Y,	7d06	=>	NOBLEWOMAN_FIGHTER			// Restore missing bame and ini file
+	Y,	Y,	N,	Y,	7d07	=>	PEASANT_MAN_FIGHTER			// Restore missing bam and ini file
+	Y,	Y,	N,	Y,	7d08	=>	PEASANT_WOMAN_FIGHTER		// Restore missing bam and ini file
+	Y,	N,	Y,	N,	7f0c	=>	KUO-TOA						// Restore missing bam and wav files
+	Y,	N,	Y,	N,	7f28	=>	KUO-TOA_LARGE				// Restore missing bam files
+	Y,	N,	N,	N,	7f41	=>	EFREETI_NOBLE				// Restore missing palettes
+	Y,	N,	N,	N,	7f42	=>	RED_WIZARD					// Restore missing palette
+	Y,	N,	N,	N,	7f43	=>	YOCHLOL						// Restore missing palettes
+//	Y,	Y,	Y,	Y,	7f44	=>	ELLESIME_WHITE				// Restore missing bam files
+//	Y,	Y,	Y,	Y,	7f48	=>	SOLAR_FALLEN				// (files do not exist)
+	Y,	Y,	N,	N,	7f49	=>	DEVA_MONADIC_FALLEN			// Restore missing bam and wav files
+//	Y,	Y,	Y,	Y,	7f4a	=>	DEVA_ASTRAL					// (files do not exist)
+//	Y,	Y,	Y,	Y,	7f4b	=>	DEVA_ASTRAL_FALLEN			// (files do not exist)
+	Y,	Y,	N,	N,	7f4c	=>	PLANETAR					// Restore missing bam and wav files
+	Y,	Y,	N,	N,	7f4d	=>	PLANETAR_FALLEN				// Restore missing bam files
+//	Y,	Y,	Y,	Y,	7f4e	=>	DEVA_MOVANIC				// (files do not exist)
+//	Y,	Y,	Y,	Y,	7f4f	=>	DEVA_MOVANIC_FALLEN			// (files do not exist)
+	Y,	N,	N,	N,	7f50	=>	NISHRUU						// Restore missing palette
+	Y,	N,	N,	N,	7f51	 =>	HAKEASHAR					// Restore missing palette
+	Y,	N,	N,	N,	7f52	=>	SAILOR_GREEN				// Restore missing palette
+	Y,	N,	N,	Y,	7f53	=>	SAILOR_RED					// Restore missing palettes and ini file
+	Y,	N,	N,	Y,	7f54	=>	SAILOR_DARK					// Restore missing palettes and ini file
+	Y,	N,	N,	Y,	7f55	=>	CRUSADER_SOLDIER			// Restore missing palettes and ini file
+	Y,	Y,	N,	Y,	7f56	=>	WILL_O_WISP					// Restore missing bam and ini files
+	Y,	Y,	N,	Y,	7f57	=>	WILL_O_WISP_SMALL			// Restore missing bam and ini files
+	Y,	Y,	N,	Y,	7f58	=>	ABISHAI_BLACK				// Restore missing bam and ini files	TODO VOIR modifier IA
+	Y,	Y,	N,	Y,	7f59	=>	ABISHAI_GREEN				// Restore missing bam and ini files
+	Y,	Y,	N,	Y,	7f5a	=>	ABISHAI_RED					// Restore missing bam and ini files
+	Y,	N,	N,	Y,	7f5b	=>	ABISHAI_BLUE				// Restore missing palette and ini file
+	Y,	Y,	N,	Y,	7f5c	=>	HAG_NIGHT					// Restore missing ini file
+	Y,	N,	N,	Y,	7f5d	=>	HAG_GREEN					// Restore missing palette and ini file
+	Y,	N,	N,	Y,	7f5e	=>	HAG_SEA						// Restore missing palette and ini file
+	Y,	Y,	N,	Y,	7f5f	=>	HAG_ANNIS					// Restore missing ini file
+	Y,	N,	N,	Y,	7f60	=>	SNAKE_WATER					// Restore missing palettes and ini file
+	Y,	Y,	N,	Y,	7f61	=>	DRAGON_RED_JUVENILE			// Restore missing bam and ini files
+//S	Y,	N,	N,	Y,	7f62	=>	DRAGON_GREEN_JUVENILE	// VOIR		sons black01-2-3-4a		Restored missing palette and ini file
+//zS	Y,	Y,	Y,	N,	7f62	=>	DRAGON_GREEN_JUVENILE	// VOIR		sons black01-2-3-4a		Restored missing palette and ini file
+	Y,	N,	N,	N,	a200	=>	WYVERN_WHITE				// Restore missing palette
+	N,	N,	N,	Y,	a201	=>	MEGALOCENTIPEDE				// Restore missing ini file
+//z	Y,	Y,	Y,	N,	a201	=>	MEGALOCENTIPEDE				// Restored missing ini file
+	Y,	Y,	N,	Y,	a202	=>	TUNNEL_WORM					// Restore missing bam and ini files
+	Y,	Y,	N,	Y,	cc00	=>	KEG1_3						// Restore missing bam, wav and ini files	VOIR wav files dans IA? et SoD
+	N,	N,	N,	Y,	cc04	=>	RAT_OUTSIDE					// Restore missing ini file
+	Y,	N,	Y,	N,	e050	=>	LICH_BLACK					// Restore missing wav files
+//z	Y,	N,	N,	N,	e050	=>	LICH_BLACK					// Restored missing wav files
+	Y,	N,	N,	N,	e080	=>	MUMMY						// Restore missing wav files
+	Y,	N,	N,	N,	e0b0	=>	TROLL_BLUE					// Restore missing wav files
+Y,	Y,	Y,	N,	e0d0	=>	UMBER_HULK_ELDER			// Restore missing wav files + bg-2
+//z	Y,	Y,	N,	N,	e0d0	=>	UMBER_HULK_ELDER	// uniquement sons + bg-2	0xe0d0.ini modif umberi umber
+	Y,	N,	N,	N,	e0e0	=>	CORNUGON					// Restore missing bam and wav files
+	Y,	N,	Y,	N,	e0f0	=>	GOLEM_ICE					// Restore missing bam and wav files	sauf ca-sp
+	Y,	N,	N,	N,	e0f0	=>	GLABREZU					// Restore missing bam and wav files	e0f0 ???
+	Y,	N,	N,	N,	e0f2	=>	WAILING_VIRGIN				// Restore missing bam and wav files
+	Y,	Y,	N,	N,	e240	=>	ANIMATED_PLATES				// Restore missing bam files
+	Y,	Y,	Y,	N,	e244	=>	BARBARIANS					// Restore missing wav files
+	Y,	Y,	N,	N,	e256	=>	BELHIFET					// Restore missing wav and ini files
+	Y,	Y,	N,	N,	e257	=>	BELHIFET_PRIEST				// Restore missing ini file
+	Y,	Y,	N,	Y,	e258	=>	HEPHERNAAN					// Restore missing palette and ini files
+//z	Y,	Y,	N,	N,	e258	=>	HEPHERNAAN					// Restored missing palette and ini files
+	N,	N,	N,	Y,	e266	=>	BUGBEAR_CAPTAIN				// Restore missing ini file
+	N,	N,	N,	Y,	e267	=>	BUGBEAR						// Restore missing ini file
+	Y,	Y,	Y,	Y,	e268	=>	CHIMERA						// Restore missing ini file
+	Y,	Y,	Y,	Y,	e269	=>	HALFDRAGON_BLACK			// Restore missing ini file
+	Y,	N,	N,	Y,	e26a	=>	HALFDRAGON_RED				// Restore missing ini file
+	Y,	Y,	Y,	Y,	e26c	=>	ELEMENTAL_WATER_SMALL		// Restore missing ini file
+	N,	N,	N,	Y,	e26d	=>	FEYR_GREATER				// Restore missing ini file
+	N,	N,	N,	Y,	e26f	=>	GIANT_FOMORIAN				// Restore missing ini file
+	N,	N,	N,	Y,	e271	=>	GOBLIN_SHAMAN				// Restore missing ini file
+	N,	N,	N,	Y,	e272	=>	GOBLIN_WORG					// Restore missing ini file
+	N,	N,	N,	Y,	e273	=>	GOBLIN_WORG_CAPTAIN			// Restore missing ini file
+	N,	N,	N,	Y,	e274	=>	HOOK_HORROR					// Restore missing ini file
+	Y,	Y,	Y,	Y,	e275	=>	ISAIR						// Restore missing ini file
+	Y,	Y,	Y,	Y,	e277	=>	MADAE						// Restore missing ini file
+	Y,	Y,	Y,	Y,	e278	=>	MALARITE					// Restore missing ini file
+	N,	N,	N,	Y,	e279	=>	OROG_SHAMAN					// Restore missing ini file
+//z	Y,	Y,	Y,	N,	e279	=>	OROG_SHAMAN					// Restored ini file
+	Y,	Y,	Y,	Y,	e27a	=>	ORC_AXE_UNDEAD				// Restore missing ini file
+	Y,	Y,	Y,	Y,	e27b	=>	ORC_SHAMAN_UNDEAD			// Restore missing ini file
+	Y,	Y,	Y,	Y,	e27c	=>	SHENRICAL					// Restore missing ini file
+	N,	N,	N,	Y,	e27d	=>	WEREBADGER					// Restore missing ini file
+	N,	N,	N,	Y,	e27e	=>	WERERAT						// Restore missing ini file
+	Y,	N,	N,	Y,	e27f	=>	BOAR_WILD					// Restore missing palette and ini files
+	N,	N,	N,	Y,	e280	=>	WORG						// Restore missing ini file
+	N,	N,	N,	Y,	e281	=>	YUAN-TI_HALF				// Restore missing ini file
+	N,	N,	N,	Y,	e282	=>	DRIDER_FEMALE				// Restore missing ini file
+	Y,	N,	N,	Y,	e288	=>	GOBLIN_WORG_ELITE			// Restore missing palette and ini files VOIR forcer dans IWDEE
+	Y,	N,	N,	Y,	e289	=>	GOBLIN_WORG_SHAMAN			// Restore missing palette and ini files VOIR forcer dans IWDEE
+	Y,	N,	N,	Y,	e28a	=>	TROLL_SPECTRAL				// Restore missing palette and ini files VOIR forcer dans IWDEE
+	Y,	N,	N,	Y,	e28d	=>	DRAGON_SILVER_YOUNG			// Restore missing palette and ini files
+	Y,	N,	N,	Y,	e28e	=>	DRAGON_GREEN_YOUNG			// Restore missing palette and ini files
+	Y,	N,	N,	Y,	e28f	=>	DROWNED_DEAD_RED			// Restore missing palette and ini files
+	Y,	N,	N,	Y,	e290	=>	HALFDRAGON_GREEN			// Restore missing palette and ini files
+	Y,	N,	N,	Y,	e291	=>	BUGBEAR_SHAMAN				// Restore missing palette and ini files
+	Y,	N,	N,	Y,	e292	=>	ETTIN_GHOST					// Restore missing palette and ini files
+	Y,	Y,	N,	Y,	e293	=>	GIANT_HILL					// Restore missing ini files (bam files overwritten in SoD by t-main_ee.tpa)
+	N,	N,	N,	Y,	e294	=>	BONEBAT						// Restore missing ini file
+	Y,	Y,	Y,	Y,	e400	=>	GOBLINS						// Restore missing wav files
+//z	Y,	Y,	N,	Y,	e400	=>	GOBLINS				// Restored sons
+	N,	N,	N,	Y,	e440	=>	MKHIIN						// Restore missing ini files
+	Y,	N,	N,	N,	ea00	=>	SHRIEKER					// Restore missing wav files
+	Y,	N,	Y,	N,	ed00	=>	YUAN-TIS					// Restore missing wav files
+//z	Y,	N,	N,	N,	ed00	=>	YUAN-TIS					// Restored missing wav files
+	Y,	N,	Y,	N,	ef10	=>	WATER_WEIRD					// Restore missing bam files (except ca-sp)
+// -0 - 1 - 2 - 3 -- 4 ------------------------------------
+// BG  BG2 SoD IWD	 ID		=>	animation
+END
+//TODO VOIR black07b = 07 3b = 03 4b = 04 6a = 06
+
+/* ========================================================================================================================== *
+ *  ARRAY GW_ee_missing_files : DEFINES where to find EE missing bam and/or wav animation files to install them in EE games.  *
+ * -------------------------------------------------------------------------------------------------------------------------- *
+ *  Used by macro gw_add_ee_missing_files.                                                                                    *
+ * -------------------------------------------------------------------------------------------------------------------------- *
+ *  1st value  = ID slot.                                                                                                     *
+ *  2nd value  = BGEE  (Y = missing - N = not missing).                                                                       *
+ *  3rd value  = BG2EE (Y = missing - N = not missing).                                                                       *
+ *  4th value  = SoD   (Y = missing - N = not missing).                                                                       *
+ *  5th value  = IWDEE (Y = missing - N = not missing).                                                                       *
+ *  6th value  = IA content pack  (archives/sub-folder).                                                                      *
+ *  7th value  = IA bam prefix    ("" = copy bam files - N = don't copy them).                                                *
+ *  8th value  = EE bam prefix    (used to rename IA bam prefix if relevant).                                                 *
+ *  9th value  = IA wav prefix    ("" = copy wav files - N = don't copy them).                                                *
+ *  10th value = EE wav prefix    (used to rename IA wavprefix if relevant).                                                  *
+ *  animation  = animation's name (sub-folder in archives/6th value folder).                                                  *
+ * ========================================================================================================================== */
+
+ACTION_CLEAR_ARRAY GW_ee_missing_files
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY GW_ee_missing_files BEGIN
+//	  ID   BG  BG2 SoD IWD	  folder				  IA_bam   EE_bam  IA_wav  EE_wav	=>	animation
+// -- 0 --- 1 - 2 - 3 - 4 ----- 5 ---------------------- 6 ----- 7 ----- 8 ----- 9 -------------------------------------
+	0x1101,	Y,	Y,	Y,	N, 	wh_dr_wyv_lop,				4jw,	mwdr,	t-dra,	dragon	=>	iwd_dragon_white			// Restore missing bam and wav files
+0x1104,	Y,	N,	N,	N,	ee_tob,						N,		N,		t-wyvb,		wyvrb	=>	wyrmling_albino			// Restore missing files	REP A AJOUTER dans ee_tob
+	0x7602,	Y,	Y,	Y,	Y,	fiends_genies,				N,		N,		"",		""		=>	myrlochar					// Restore missing wav files
+	0x7d03,	Y,	Y,	N,	N,	ee_tob,						2aa,	achw,	"",		""		=>	ee_chicken_white			// Restore missing bam files
+	0x7f40,	Y,	N,	Y,	N,	ee_tob,						8dr,	mglm,	N,		N		=>	ee_golem_mini				// Restore missing bam files
+	0x7f43,	Y,	Y,	Y,	Y,	fiends_genies,				N,		N,		"",		""		=>	yochlol						// Restore missing wav files
+// Ellesime_white : TODO recolor g2 files. WIP
+	0x7f47,	Y,	Y,	Y,	Y,	bg2_iwd2,					3jx,	mfi2,	N,		N		=>	bg2_giant_fire_2			// Restore missing bam files
+	0x7f58,	Y,	Y,	Y,	Y,	pst_abishai,				N,		N,		t-abi,	abish	=>	_soundsets					// Restore missing wav files
+	0x7f5c,	Y,	Y,	N,	Y,	fiends_genies,				3ak,	mhag,	t-hag,	bdhag	=>	hag_night					// Restore missing bam and wav files
+	0x7f5f,	Y,	Y,	N,	Y,	fiends_genies,				3et,	mhan,	N,		N		=>	hag_annis					// Restore missing bam files
+	0xa201,	Y,	Y,	N,	Y,	ee_tob,						2aa,	mcen,	N,		N		=>	ee_megalocentipede			// Restore missing bam files
+	0xe000,	Y,	Y,	N,	N, 	base_anims,					"",		"",		t-cyc,	cyclo	=>	iwd_cyclops					// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe010,	Y,	Y,	N,	Y,	base_anims,					"",		"",		N,		N		=>	bg2_ettin					// Restore missing ca-sp bam files	- VERIF Forcer IWDEE
+	0xe040,	Y,	Y,	N,	N,	base_anims,					"",		"",		t-his,	hista	=>	iwd_histachii				// Restore missing bam and wav files
+0xe060,	Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	iwd_lich_white				// Restore missing bam files	VERIF modifier nom des fichiers.
+	0xe070,	Y,	Y,	Y,	N,	base_anims,					mmta,	mmin,	t-min,	minot	=>	bg2_minotaur				// Restore missing ca-sp bam and wav files	- VERIF Forcer IWDEE
+	0xe080,	Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	bg2_mummy					// Restore missing ca-sp bam files	- VERIF Forcer IWDEE
+0xe090,	Y,	N,	N,	N,	bg2_restores,				"",		"",		N,		N		=>	marilith					// Restore missing bam files	VERIF changement de préfixe
+	0xe0a0,	Y,	Y,	Y,	N,	base_anims,					"",		"",		t-ict,	icetr	=>	iwd_troll_ice				// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe0b0,	Y,	Y,	Y,	N,	base_anims,					mtrl,	mtro,	"",		""		=>	iwd_troll_blue				// Restore missing ca-sp bam files	VERIF Forcer IWDEE
+	0xe0c0,	N,	Y,	N,	N,	base_anims,					"",		"",		t-snt,	snwtr	=>	iwd_troll_snow				// Restore missing bam and wav files
+	0xe0d0, Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	iwd_umber_hulk_elder		// Restore missing bam files
+	0xe0f0, Y,	Y,	Y,	N,	base_anims,					"",		"",		N,		N		=>	bg2_golem_ice				// Restore missing ca-sp bam files
+	0xe200, Y,	Y,	N,	N,	base_anims,					"",		"",		t-btl,	beetl	=>	iwd_beetle_boring			// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe210, Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	iwd_beetle_fire				// Restore missing bam files	VERIF Forcer IWDEE
+	0xe220, Y,	Y,	N,	N,	base_anims,					"",		"",		t-bmb,	bomba	=>	iwd_beetle_bombardier		// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe230, Y,	Y,	N,	N,	base_anims,					"",		"",		t-rhi,	rhino	=>	iwd_beetle_rhinoceros		// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe243,	Y,	Y,	Y,	N,	iwd,						3kg,	maru,	N,		N		=>	iwd_arundel					// Restore missing bam files
+	0xe244,	Y,	Y,	Y,	Y,	iwd,						3cp,	mba1,	N,		N		=>	iwd_barbarian_warrior_tan	// Restore missing bam files	VERIF Forcer IWDEE
+	0xe245,	Y,	Y,	Y,	N,	iwd,						3cq,	mba2,	N,		N		=>	iwd_barbarian_warrior_red	// Restore missing bam files	VERIF Forcer IWDEE
+	0xe246,	Y,	Y,	Y,	N,	iwd,						3cr,	mba3,	N,		N		=>	iwd_barbarian_warrior_brown	// Restore missing bam files	VERIF Forcer IWDEE
+	0xe247, Y,	Y,	Y,	N,	iwd,						3cm,	mba4,	N,		N		=>	iwd_barbarian_shaman_hammer	// Restore missing bam files
+	0xe248,	Y,	Y,	Y,	N,	iwd,						3cn,	mba5,	N,		N		=>	iwd_barbarian_shaman_staff	// Restore missing bam files
+	0xe249,	Y,	Y,	Y,	N,	iwd,						3co,	mba6,	N,		N		=>	iwd_barbarian_shaman_club	// Restore missing bam files
+	0xe24a,	Y,	Y,	Y,	Y,	iwd,						3cs,	mbai,	N,		N		=>	iwd_barbarian_icasaracht	// Restore missing bam files	VERIF Forcer IWDEE
+	0xe24b,	Y,	Y,	Y,	N,	iwd,						3cd,	mele,	N,		N		=>	iwd_elemental_earth			// Restore missing bam files	VERIF Forcer IWDEE
+	0xe24c,	Y,	Y,	Y,	N,	iwd,						3ce,	melf,	t-fir,	fire	=>	iwd_elemental_fire			// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe24d,	Y,	Y,	N,	N,	iwd,						3cf,	melw,	t-wat,	watere	=>	iwd_elemental_water			// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe24e,	Y,	Y,	Y,	N,	iwd,						3cw,	mgfi,	N,		N		=>	iwd_giant_fire_iwd			// Restore missing bam files	VERIF Forcer IWDEE
+	0xe24f,	Y,	Y,	Y,	N,	shadows_harpy_frostgiant,	3br,	mgfr,	t-fro,	gfrst	=>	giant_frost					// Restore missing bam and wav files
+	0xe250,	Y,	Y,	Y,	N,	iwd,						3cx,	mgir,	t-gol,	golem	=>	iwd_golem_iron_iwd			// Restore missing bam and wav files
+	0xe251,	Y,	Y,	N,	N,	iwd,						3dc,	mgve,	t-ver,	verbee	=>	iwd_giant_verbeeg			// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe252,	Y,	Y,	Y,	N,	shadows_harpy_frostgiant,	3bs,	mhar,	t-har,	harpy	=>	harpy						// Restore missing bam and wav files
+	0xe253,	Y,	Y,	Y,	N,	iwd,						3cy,	mrem,	t-rem,	remor	=>	iwd_remorhaz				// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe254,	Y,	Y,	N,	N,	ee_tob,						3kk,	mscr,	t-scra,	scrag	=>	ee_troll_scrag				// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe255,	Y,	Y,	Y,	N,	iwd,						3cz,	msee,	t-see,	seer	=>	iwd_seer					// Restore missing bam and wav files
+	0xe256,	Y,	Y,	N,	N,	belhifet_and_marilith,		3bv,	mbe1,	t-bel,	belhif	=>	iwd_belhifet				// Restore missing bam and wav files
+	0xe257,	Y,	Y,	N,	N,	iwd,						3ct,	mbe2,	t-bep,	belprs	=>	iwd_belhifet_priest			// Restore missing bam and wav files
+//3km???	0xe258,	N,	N,	N,	Y,	ee_tob,						3kj,	mbe3,	N,		N		=>	ee_hephernaan				// Restore missing bam files ==> moved to GW_EE_missing_anims array and t-animate_ee.tpa
+	0xe259,	Y,	Y,	Y,	N,	iwd_svirfneblin,			3bm,	msvi,	N,		N		=>	svirfneblin_pale_axe		// Restore missing bam files	VERIF Forcer IWDEE
+	0xe25a,	Y,	Y,	Y,	N,	iwd_svirfneblin,			3bn,	msv2,	N,		N		=>	svirfneblin_pale_noaxe		// Restore missing bam files	VERIF Forcer IWDEE
+	0xe25b,	Y,	Y,	Y,	N,	iwd,						3db,	mum2,	t-vod,	vodya	=>	iwd_umber_hulk_vodyanoi		// Restore missing bam and wav files
+	0xe25c,	Y,	Y,	Y,	N,	belhifet_and_marilith,		3bq,	mta2,	N,		N		=>	iwd_marilith				// Restore missing bam files
+	0xe25d,	Y,	Y,	Y,	N,	iwd,						3da,	myet,	t-yet,	yeti	=>	iwd_tundra_yeti				// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe25e,	Y,	Y,	N,	N,	iwd,						3dd,	mwi4,	t-wgb,	barrow	=>	iwd_wight_barrow			// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe25f,	Y,	Y,	N,	N,	iwd,						3cv,	mdrd,	t-drn,	drown	=>	iwd_drowned_dead			// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe260,	Y,	Y,	Y,	N,	iwd,						3cu,	mcrd,	t-cre,	creep	=>	iwd_creeping_doom			// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe261,	Y,	Y,	N,	N,	iwd,						3cg,	msah,	t-sah,	smsah	=>	iwd_sahuagin				// Restore missing bam and wav files
+	0xe262,	Y,	Y,	N,	N,	iwd,						3ch,	msat,	t-sai,	lgsah	=>	iwd_sahuagin_large			// Restore missing bam and wav files
+	0xe263,	Y,	Y,	Y,	N,	iwd_svirfneblin,			3ke,	msv3,	N,		N		=>	iwd_svirfneblin_dark_axe	// Restore missing bam files	VERIF Forcer IWDEE
+	0xe264,	Y,	Y,	Y,	N,	iwd_svirfneblin,			3kf,	msv4,	N,		N		=>	iwd_svirfneblin_dark_noaxe	// Restore missing bam files	VERIF Forcer IWDEE
+	0xe265,	Y,	Y,	Y,	Y,	bg2_iwd2,					N,		N,		t-boa,	boar	=>	iwd2_boar_arctic			// Restore missing wav files
+	0xe266,	Y,	Y,	Y,	Y,	bg2_iwd2,					3ap,	mbu2,	t-bgc,	bgcpt	=>	iwd2_bugbear_captain		// Restore missing bam and wav files
+	0xe267,	Y,	Y,	Y,	Y,	bg2_iwd2,					3ao,	mbug,	t-bug,	bugbr	=>	iwd2_bugbear				// Restore missing bam and wav files
+	0xe268,	Y,	Y,	Y,	Y,	bg2_iwd2,					3aq,	mchi,	t-chi,	chim	=>	iwd2_chimera				// Restore missing bam and wav files
+	0xe269,	Y,	Y,	Y,	Y,	bg2_iwd2,					3ad,	mdh1,	t-hdr,	hdrag	=>	iwd2_half-dragon_black		// Restore missing bam and wav files
+	0xe26a,	Y,	Y,	N,	Y,	bg2_iwd2,					3ae,	mdh2,	N,		N		=>	iwd2_half-dragon_red		// Restore missing bam files
+	0xe26b,	Y,	Y,	N,	Y,	bg2_iwd2,					3aa,	mdtr,	t-tre,	tree	=>	iwd2_treant_dark			// Restore missing bam and wav files
+	0xe26c,	Y,	Y,	Y,	Y,	bg2_iwd2,					3ar,	mew2,	N,		N		=>	iwd2_elemental_water_small	// Restore missing bam files
+	0xe26d,	Y,	Y,	Y,	Y,	bg2_iwd2,					3at,	mfe2,	t-fgr,	gfeyr	=>	iwd2_feyr_greater			// Restore missing bam and wav files
+	0xe26e,	Y,	Y,	N,	Y,	bg2_iwd2,					3as,	mfey,	t-fer,	feyr	=>	iwd2_feyr					// Restore missing bam and wav files
+	0xe26f,	Y,	Y,	N,	Y,	bg2_iwd2,					3au,	mgfo,	t-fom,	fomor	=>	iwd2_giant_fomorian			// Restore missing bam and wav files
+	0xe270,	Y,	Y,	N,	N,	bg2_iwd2,					3av,	mgo5,	t-gbc,	capt	=>	iwd2_goblin_captain			// Restore missing bam and wav files	VERIF Forcer IWDEE
+	0xe271,	Y,	Y,	N,	Y,	bg2_iwd2,					3ba,	mgoc,	t-gbs,	gbcas	=>	iwd2_goblin_shaman			// Restore missing bam and wav files
+	0xe272,	Y,	Y,	N,	Y,	bg2_iwd2,					3ay,	mgwo,	t-gbw,	gobwg	=>	iwd2_goblin_worg			// Restore missing bam and wav files
+	0xe273,	Y,	Y,	N,	Y,	bg2_iwd2,					3az,	mgw2,	t-gcw,	cptwg	=>	iwd2_goblin_worg_captain	// Restore missing bam and wav files
+	0xe274,	Y,	Y,	N,	Y,	bg2_iwd2,					3bd,	mhoh,	t-hoo,	hook	=>	iwd2_hook_horror			// Restore missing bam and wav files
+	0xe275,	Y,	Y,	Y,	Y,	bg2_iwd2,					3af,	misa,	t-isa,	isair	=>	iwd2_isair					// Restore missing bam and wav files
+	0xe276,	Y,	Y,	N,	Y,	bg2_iwd2,					3bh,	mlem,	t-lem,	lemu	=>	iwd2_lemure					// Restore missing bam and wav files
+	0xe277,	Y,	Y,	Y,	Y,	bg2_iwd2,					3ag,	mmad,	t-mad,	madae	=>	iwd2_madae					// Restore missing bam and wav files
+	0xe278,	Y,	Y,	Y,	Y,	bg2_iwd2,					3ah,	mmal,	t-mal,	mala	=>	iwd2_malarite				// Restore missing bam and wav files
+	0xe279,	Y,	Y,	N,	Y,	bg2_iwd2,					3bi,	mnos,	N,	 	N		=>	iwd2_orog_shaman			// Restore missing bam files
+	0xe27a,	Y,	Y,	Y,	Y,	bg2_iwd2,					3bk,	mor6,	t-oru,	udorc	=>	iwd2_orc_axe_undead			// Restore missing bam and wav files
+	0xe27b,	Y,	Y,	Y,	Y,	bg2_iwd2,					3bj,	mor7,	N,	 	N		=>	iwd2_orc_shaman_undead		// Restore missing bam files
+	0xe27c,	Y,	Y,	Y,	Y,	bg2_iwd2,					3ai,	mshe,	t-she,	sheri	=>	iwd2_shenrical				// Restore missing bam and wav files
+	0xe27d,	Y,	Y,	N,	Y,	bg2_iwd2,					3aj,	mweb,	t-wba,	wbadg	=>	iwd2_werebadger				// Restore missing bam and wav files
+	0xe27e,	Y,	Y,	N,	Y,	bg2_iwd2,					3ak,	mwra,	t-wra,	wrat	=>	iwd2_wererat				// Restore missing bam and wav files
+	0xe280, Y,	Y,	N,	Y,	bg2_iwd2,					3bl,	mwor,	N,		N		=>	iwd2_worg					// Restore missing bam files
+	0xe281,	Y,	Y,	N,	Y,	bg2_iwd2,					3al,	myuh,	t-yhb,	half	=>	iwd2_yuan-ti_half			// Restore missing bam and wav files
+	0xe282,	Y,	Y,	N,	Y,	bg2_iwd2,					3ab,	mdrf,	t-drf,	fdrid	=>	iwd2_drider_female			// Restore missing bam and wav files
+	0xe283,	Y,	Y,	N,	Y,	bg2_iwd2,					3ac,	mdrm,	t-drm,	mdrid	=>	iwd2_drider_male			// Restore missing bam and wav files
+	0xe28b,	Y,	Y,	N,	Y,	bg2_iwd2,					3am,	mabw,	t-abi,	abish	=>	iwd2_abishai_white			// Restore missing bam and wav files
+	0xe28c,	Y,	Y,	N,	Y,	ee_tob,						3ka,	mwd2,	t-bab,	baby	=>	ee_dragon_white_young		// Restore missing bam and wav files
+	0xe294,	Y,	Y,	Y,	Y,	ee_tob,						3eb,	mbon,	t-var,	vargo	=>	ee_bonebat					// Restore missing bam and wav files
+	0xe300,	Y,	Y,	N,	N,	base_anims,					"",		"",		t-ghs,	ghost	=>	iwd_ghost					// Restore missing bam and wav files	voir forcer IWDEE
+	0xe310,	Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	iwd_ghoul_greater			// Restore missing bam files	voir forcer IWDEE
+	0xe320,	Y,	Y,	N,	N,	base_anims,					"",		"",		t-ght,	ghoul	=>	iwd_ghast_greater			// Restore missing bam and wav files	voir forcer IWDEE
+	0xe4xx,	Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	bg2_goblins					// Restore missing ca-sp bam files	voir forcer IWDEE
+	0xe440,	Y,	Y,	N,	Y,	ee_tob,						3kn,	mgo6,	N,		N		=>	mkhiin						// Restore missing bam files
+	0xe441,	Y,	Y,	Y,	Y,	ee_tob,						3ko,	mgo7,	N,		N		=>	mkhiin_bow					// Restore missing bam files (and gu.bam)
+	0xe442,	Y,	Y,	Y,	Y,	ee_tob,						3kp,	mgo8,	N,		N		=>	mkhiin_staff				// Restore missing bam files (and sle.bam)
+	0xe443,	Y,	Y,	N,	Y,	ee_tob,						3kq,	mgo9,	N,		N		=>	mkhiin_armor_axe			// Restore missing bam files
+	0xe444,	Y,	Y,	N,	Y,	ee_tob,						3kr,	mgo10,	N,		N		=>	mkhiin_armor_bow			// Restore missing bam files
+	0xe500,	Y,	Y,	Y,	Y,	iwd,						"",		"",		N,		N		=>	iwd_lizard_man_elite		// Restore missing weapons bam files
+	0xe510,	Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	iwd_lizard_man				// Restore missing bam files	voir forcer IWDEE
+	0xe520,	Y,	Y,	N,	N,	base_anims,					"",		"",		t-lzk,	lizkn	=>	iwd_lizard_king				// Restore missing bam and wav files	voir forcer IWDEE
+	0xe7xx,	Y,	Y,	Y,	Y,	base_anims,					"",		"",		N,		N		=>	bg2_orogs					// Restore missing ca-sp bam files	forcer
+	0xe8xx,	Y,	Y,	Y,	Y,	base_anims,					"",		"",		N,		N		=>	bg2_orcs					// Restore missing ca-sp bam files	forcer
+	0xe9xx,	Y,	Y,	Y,	Y,	base_anims,					"",		"",		N,		N		=>	bg2_salamanders				// Restore missing ca-sp bam files	forcer
+	0xea10,	Y,	Y,	N,	Y,	base_anims,					"",		"",		t-shs,	shadw	=>	iwd_shadow_small			// Restore missing bam and wav files	ca-sp forcer IWDEE
+	0xea20,	Y,	Y,	N,	N,	base_anims,					"",		"",		t-shl,	shadbg	=>	iwd_shadow_large			// Restore missing bam and wav files	ca-sp forcer IWDEE
+	0xeb10,	Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	bg2_skeleton_warrior		// Restore missing ca-sp bam files	voir forcer IWDEE
+	0xeb20,	Y,	Y,	Y,	Y,	base_anims,					"",		"",		N,		N		=>	bg2_skeleton_fiend			// Restore missing ca-sp bam files	forcer
+	0xec00,	Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	iwd_wight_gray				// Restore missing bam files
+	0xec10,	Y,	Y,	N,	N,	base_anims,					"",		"",		t-wgr,	wight	=>	iwd_wight_green				// Restore missing bam and wav files
+	0xec20,	Y,	Y,	N,	N,	base_anims,					"",		"",		t-wgy,	wig3	=>	iwd_wight_yellow			// Restore missing bam and wav files
+	0xed00,	Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	bg2_yuan-ti					// Restore missing ca-sp bam files	forcer
+	0xed10,	Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	bg2_yuan-ti_elite			// Restore missing ca-sp bam files	forcer
+	0xee00,	Y,	Y,	N,	N,	base_anims,					"",		"",		t-zow,	zomwor	=>	iwd_zombie_yellow			// Restore missing bam and wav files	ca-sp forcer
+	0xee10,	Y,	Y,	N,	N,	base_anims,					"",		"",		N,		N		=>	iwd_zombie_blue				// Restore missing bam files	ca-sp forcer
+	0xef10,	Y,	Y,	Y,	N,	base_anims,					"",		"",		t-wei,	weird	=>	bg2_water_weird				// Restore missing ca-sp bam and wav files	forcer
+// -- 0 --- 1 - 2 - 3 - 4 ----- 5 ---------------------- 6 ----- 7 ----- 8 ----- 9 -------------------------------------
+//	  ID   BG  BG2 SoD IWD	  folder				  IA_bam   EE_bam  IA_wav  EE_wav	=>	animation
+END
+
+
+/* ======================================================================================================================= *
+ *  ARRAY GW_ia_animations : DEFINES where to find IA missing bam and/or wav animation files to install them in EE games.  *
+ * ----------------------------------------------------------------------------------------------------------------------- *
+ *  Used by macro gw_add_ia_missing_animations.                                                                            *
+ * ----------------------------------------------------------------------------------------------------------------------- *
+ *  1st value = IA content pack (archives/sub-folder).                                                                     *
+ *  2nd value = IA bam prefix   (N = don't copy bam files).                                                                *
+ *  3rd value = IA wav files    ("" = copy them - N = don't copy them).                                                    *
+ *  4th value = IA wav prefix.                                                                                             *
+ *  animation = animation's name (sub-folder in archives/1st value folder).                                                *
+ * ======================================================================================================================= */
+
+ACTION_CLEAR_ARRAY GW_ia_animations
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY GW_ia_animations BEGIN
+//	   folder				  IA_bam   EE_wav  IA_wav	=>	animation
+// ----- 0 --------------------- 1 ----- 2 ------ 3 ----------------------------------------
+//	ia_bgii_iwdii
+	bg2_iwd2,					3bb,	"",		t-gbx	=>	iwd2_goblin_axe_green			// Install bam and wav files
+	bg2_iwd2,					3bc,	"",		t-gbb	=>	iwd2_goblin_bow_green			// Install bam and wav files
+	bg2_iwd2,					3aw,	"",		t-gix	=>	iwd2_goblin_elite_axe_green		// Install bam and wav files
+	bg2_iwd2,					3ax,	"",		t-geb	=>	iwd2_goblin_elite_bow_green		// Install bam and wav files
+
+//	ia_fiends_genies
+	fiends_genies,				8co,	N,		N		=>	dao								// Install bam files
+	fiends_genies,				8cp,	N,		N		=>	dao_legs						// Install bam files
+	fiends_genies,				8cq,	N,		N		=>	efreeti							// Install bam files
+	fiends_genies,				8cr,	N,		N		=>	efreeti_legs					// Install bam files
+	fiends_genies,				3er,	"",		t-ghq	=>	ghoul_queen						// Install bam and wav files
+	fiends_genies,				8cs,	N,		N		=>	janni							// Install bam files
+	fiends_genies,				8ct,	N,		N		=>	janni_legs						// Install bam files
+	fiends_genies,				8cu,	N,		N		=>	marid							// Install bam files
+	fiends_genies,				8cv,	N,		N		=>	marid_legs						// Install bam files
+	fiends_genies,				3de,	N,		N		=>	marilith_dark					// Install bam files
+	fiends_genies,				N,		"",		t-eri	=>	erinyes							// Install wav files
+	fiends_genies,				N,		"",		t-gel	=>	gelugon							// Install wav files
+	fiends_genies,				N,		"",		t-tif	=>	tiefling_female					// Install wav files
+	fiends_genies,				N,		"",		t-tim	=>	tiefling_male					// Install wav files
+
+//	ia_iwd
+	iwd,						3ci,	"",		t-dgu	=>	iwd_animated_plate_bronze_small	// Install bam files
+	iwd,						3cj,	N,		N		=>	iwd_animated_plate_dark_small	// Install bam files
+	iwd,						3ck,	N,		N		=>	iwd_animated_plate_green_small	// Install bam files
+
+//	ia_iwd_svirfneblin
+	iwd_svirfneblin,			N,		"",		""		=>	_soundsets						// Install wav files
+
+//	ia_nwn_01_modron
+	nwn_01_modron,				3ac,	"",		t-mod	=>	modron_round					// Install bam and wav files
+	nwn_01_modron,				3bw,	"",		t-aml	=>	nwn_amel						// Install bam and wav files
+	nwn_01_modron,				1jx,	"",		t-bas	=>	nwn_basilisk					// Install bam and wav files
+	nwn_01_modron,				3by,	"",		t-beb	=>	nwn_bebilith					// Install bam and wav files
+	nwn_01_modron,				3bz,	"",		t-ham	=>	nwn_hamatula					// Install bam and wav files
+	nwn_01_modron,				3ca,	"",		t-osy	=>	nwn_osyluth						// Install bam and wav files
+	nwn_01_modron,				3cb,	"",		t-pit	=>	nwn_pit_fiend					// Install bam and wav files
+	nwn_01_modron,				3cc,	"",		t-sca	=>	nwn_scarecrow					// Install bam and wav files
+	nwn_01_modron,				3bx,	"",		t-ved	=>	nwn_vedred						// Install bam and wav files
+
+//	ia_nwn_misc_i
+	nwn_misc_1,					3dh,	"",		t-bov	=>	bovine_axe_thing				// Install bam and wav files
+	nwn_misc_1,					3ah,	"",		t-dis	=>	ccp_displacer_beast				// Install bam and wav files
+	nwn_misc_1,					3dg,	"",		t-bmn	=>	nwn_beetle_bombardier			// Install bam and wav files
+	nwn_misc_1,					3jz,	"",		t-fgf	=>	nwn_giant_fire_female			// Install bam and wav files
+	nwn_misc_1,					3ka,	"",		t-frf	=>	nwn_giant_frost_female			// Install bam and wav files
+	nwn_misc_1,					3df,	"",		t-suc	=>	nwn_succubus					// Install bam and wav files
+
+//	ia_pst_paletted
+	pst_paletted,				3ev,	"",		t-aas	=>	aasimar_female					// Install bam and wav files
+	pst_paletted,				3ao,	"",		t-bar	=>	baurier_male					// Install bam and wav files
+	pst_paletted,				3ex,	"",		t-dmf-	=>	dustman_female					// Install bam and wav files
+	pst_paletted,				3ez,	"",		t-dmm	=>	dustman_male					// Install bam and wav files
+	pst_paletted,				3fa,	"",		t-ghf	=>	ghoul_female					// Install bam and wav files
+	pst_paletted,				3fb,	"",		t-ghm	=>	ghoul_male						// Install bam and wav files
+	pst_paletted,				3av,	"",		t-gzr	=>	githzerai						// Install bam and wav files
+	pst_paletted,				3aw,	"",		t-gdm	=>	godsman							// Install bam and wav files
+	pst_paletted,				3bc,	"",		t-hlt	=>	harlot							// Install bam and wav files
+	pst_paletted,				3fc,	"",		t-mrc	=>	merchant						// Install bam and wav files
+	pst_paletted,				3bb,	"",		t-mdw	=>	midwife							// Install bam and wav files
+	pst_paletted,				3fd,	"",		t-skp	=>	skeleton_priest					// Install bam and wav files
+	pst_paletted,				3be,	"",		t-skw	=>	skeleton_worker					// Install bam and wav files
+	pst_paletted,				3bf,	"",		t-thk	=>	thokola							// Install bam and wav files
+	pst_paletted,				3bg,	"",		t-ths	=>	thug							// Install bam and wav files
+	pst_paletted,				3ax,	"",		t-thl	=>	thug_large						// Install bam and wav files
+	pst_paletted,				3fe,	N,		N		=>	tiefling_female					// Install bam files
+	pst_paletted,				3eh,	"",		t-tmp	=>	tiefling_male					// Install bam and wav files
+	pst_paletted,				3ap,	"",		t-ctf-	=>	townie_curst_female				// Install bam and wav files
+	pst_paletted,				3ew,	"",		t-ctm	=>	townie_curst_male				// Install bam and wav files
+	pst_paletted,				3ay,	N,		N		=>	townie_lower_class_female		// Install bam files
+	pst_paletted,				3az,	N,		N		=>	townie_lower_class_male			// Install bam files
+	pst_paletted,				3ej,	"",		t-tuf	=>	townie_upper_class_female		// Install bam and wav files
+	pst_paletted,				3bl,	"",		t-tum	=>	townie_upper_class_male			// Install bam and wav files
+	pst_paletted,				3ei,	"",		t-twz	=>	townie_wizard					// Install bam and wav files
+	pst_paletted,				3bm,	"",		t-zmf	=>	zombie_female					// Install bam and wav files
+	pst_paletted,				3bn,	"",		t-zmm	=>	zombie_male						// Install bam and wav files
+
+//	ia_shadows_harpy_frostgiant
+	shadows_harpy_frostgiant,	3bu,	N,		N		=>	shadow_large_murky				// Install bam files
+	shadows_harpy_frostgiant,	3bt,	N,		N		=>	shadow_small_murky				// Install bam files
+
+//	ia_wh_dr_wyv_lop
+//	iwd_wyvern_white_big
+	wh_dr_wyv_lop,				3ke,	N,		N		=>	pst_lady_of_pain				// Install bam files
+
+//	ia_modders
+	modders,					3dk,	N,		N		=>	bear_giant_d2					// Install bam files
+	modders,					3js,	"",		ub#tb	=>	butcher							// Install bam and wav files
+	modders,					3dl,	N,		N		=>	jastey_wolfhound				// Install bam files
+	modders,					3di,	"",		w_mxxx	=>	packmule_wow					// Install bam and wav files
+	modders,					3dj,	N,		N		=>	werebear_d2						// Install bam files verif ini et bam fichier
+// ----- 0 --------------------- 1 ---- 2 ----- 3 ------------------------------------------
+//	   folder				  IA_bam  EE_wav  IA_wav	=>	animation
+END
+
+
+/* ================================================================================================================================ *
+ *  ARRAY GW_moinesse_files : DEFINES where to find IA moinesse animation files and how to installed them in EE games.              *
+ * -------------------------------------------------------------------------------------------------------------------------------- *
+ * Used by macro gw_add_ia_moinesse_animations.                                                                                     *
+ * -------------------------------------------------------------------------------------------------------------------------------- *
+ *  1th value = IA bam prefix.                                                                                                      *
+ *  2nd value = EE bam prefix used to rename IA bam prefix (EE games don't recognize 0a0x as a character prefix animation).         *
+ *  3rd value = EE paperdoll prefix used to rename IA bam prefix (EE games don't recognize the same character paperdoll prefixes).  *
+ *  folder    = sub-folder in /archives/moinesse_edits_iaised folder.                                                               *
+ * ================================================================================================================================ */
+
+ACTION_CLEAR_ARRAY GW_moinesse_files
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY GW_moinesse_files BEGIN
+//	bam	   bam_ee  paperd	=>	folder
+// -- 0 ----- 1 ----- 2 -------------------------
+	0a0a,	mhmb,	mhmf	=>	hm_barbarian
+	0a0b,	mhmt,	mhmt	=>	hm_ninja
+	0a0c,	vhmb,	vhmf	=>	hm_vampire
+	0a0e,	mefw,	mefw	=>	elff_mage1
+	0a0i,	dhfb,	mhfc	=>	hf_cleric_druid4
+	0a0j,	mhfb,	mhff	=>	hf_fighter
+	0a0k,	mhfw,	mhfw	=>	hf_mage
+	0a0l,	mhft,	mhft	=>	hf_thief
+END
+
+
+/* =================================================================================================================== *
+ *  ARRAY GW_bg1_paperdolls_files : DEFINES how to copy-rename paperdolls for BG1 characters animations in EE games.   *
+ * ------------------------------------------------------------------------------------------------------------------- *
+ *  Used by macro gw_add_bg1characters_animations.                                                                     *
+ * ------------------------------------------------------------------------------------------------------------------- *
+ *  1st value = EE vanilla paperdoll bam prefix.                                                                       *
+ *  2nd value = Armor levels number (e.g. 4 = CDFC1inv.bam, CDFC2inv.bam, CDFC3inv.bam, CDFC4inv.bam).                 *
+ *  new       = new paperdoll prefix used to rename IE vanilla paperdoll prefix to fit new BG1 characters animations.  *
+ * =================================================================================================================== */
+
+ACTION_CLEAR_ARRAY GW_bg1_paperdolls_files
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY GW_bg1_paperdolls_files BEGIN
+//	bam	  armor	=>	new
+// -- 0 --- 1 --------------------------------
+	CDFC,	4	=> xdfc
+	CDFF,	4	=> xdff
+	CDFT,	4	=> xdft
+	CDFW,	4	=> xdfw
+
+	CGFC,	4	=> xgfc
+	CGFF,	4	=> xgff
+	CGFT,	4	=> xgft
+	CGFW,	4	=> xgfw
+
+	CGMC,	4	=> xgmc
+	CGMF,	4	=> xgmf
+	CGMT,	4	=> xgmt
+	CGMW,	4	=> xgmw
+
+	COFC,	4	=> xofc
+	COFF,	4	=> xoff
+	COFT,	4	=> xoft
+	COFW,	4	=> xofw
+
+	COMC,	4	=> xomc
+	COMF,	4	=> xomf
+	COMT,	4	=> xomt
+	COMW,	4	=> xomw
+END
+
+
+/* ============================================================================================================================= *
+ *  ARRAY GW_ia_anim_ini_files_to_clone : DEFINES how to create ini files clones and fill them with new values (EE games).       *
+ *                                        DÉFINIT comment créer des clones de fichiers ini et modifier leurs valeurs (jeux EE).  *
+ * ----------------------------------------------------------------------------------------------------------------------------- *
+ *  Used by macro gw_clone_ia_anim_ini_files.                                                                                    *
+ * ----------------------------------------------------------------------------------------------------------------------------- *
+ *  1th value = ID existing ini file to clone (N = use 2d value - other value : existing in game ini file. eg. 7d03).            *
+ *  2nd value = new ini file to clone.                                                                                           *
+ *  3rd value = original EE bam prefix to modify.                                                                                *
+ *  4th value = new EE bam prefix (matching new animation slot). N = no change (used for bam files using different palettes).    *
+ *  5th value = ellipse value (selection circle size). "-1" = no change.                                                         *
+ *  new       = new ini file created (animation label created with t_animate_ee.tpa routine).                                    *
+ * ============================================================================================================================= */
+
+ACTION_CLEAR_ARRAY GW_ia_anim_ini_files_to_clone
+
+ACTION_DEFINE_ASSOCIATIVE_ARRAY GW_ia_anim_ini_files_to_clone BEGIN
+//	ID		original ini file	  bam_or  bam_new ellipse  =>	new
+// - 0 ------------ 1 -------------- 2 ----- 3 ---- 4 ------ -----------------------------
+	e240,	animated_plate_bronze,	MANI,	3CI,	16		=> ANIMATED_PLATE_BRONZE_SMALL
+	e241,	animated_plate_dark,	MAN2,	3CJ,	16		=> ANIMATED_PLATE_DARK_SMALL
+	e242,	animated_plate_green,	MAN3,	3CK,	16		=> ANIMATED_PLATE_GREEN_SMALL
+	ea10,	shadow_small,			MSH1,	3BT,	"-1"	=> SHADOW_SMALL_MURKY
+	ea20,	shadow_large,			MSH2,	3BU,	"-1"	=> SHADOW_LARGE_MURKY
+	N,		dao,					8CO,	8CQ,	"-1"	=>	EFREETI
+	N,		dao_legs,				8CP,	8CR,	"-1"	=>	EFREETI_LEGS
+	N,		dao,					8CO,	8CS,	"-1"	=>	JANNI
+	N,		dao_legs,				8CP,	8CT,	"-1"	=>	JANNI_LEGS
+	N,		dao,					8CO,	8CU,	"-1"	=>	MARID
+	N,		dao_legs,				8CP,	8CV,	"-1"	=>	MARID_LEGS
+	N,		pst_paletted,			XXX,	3EV,	"-1"	=>	AASIMAR_FEMALE_PST
+	N,		pst_paletted,			XXX,	3EX,	"-1"	=>	DUSTMAN_FEMALE_PST
+	N,		pst_paletted,			XXX,	3EZ,	"-1"	=>	DUSTMAN_MALE_PST
+	N,		pst_paletted,			XXX,	3AV,	"-1"	=>	GITHZERAI_PST
+	N,		pst_paletted,			XXX,	3AW,	"-1"	=>	GODSMAN_PST
+	N,		pst_paletted,			XXX,	3FC,	"-1"	=>	MERCHANT_PST
+	N,		pst_paletted,			XXX,	3BB,	"-1"	=>	MIDWIFE_PST
+	N,		pst_paletted,			XXX,	3BC,	"-1"	=>	HARLOT_PST
+	N,		pst_paletted,			XXX,	3FE,	"-1"	=>	TIEFLING_FEMALE_PST
+	N,		pst_paletted,			XXX,	3EH,	"-1"	=>	TIEFLING_MALE_PST
+	N,		pst_paletted,			XXX,	3AP,	"-1"	=>	TOWNIE_CURST_FEMALE_PST
+	N,		pst_paletted,			XXX,	3EW,	"-1"	=>	TOWNIE_CURST_MALE_PST
+	N,		pst_paletted,			XXX,	3AY,	"-1"	=>	TOWNIE_LOWER_CLASS_FEMALE_PST
+	N,		pst_paletted,			XXX,	3AZ,	"-1"	=>	TOWNIE_LOWER_CLASS_MALE_PST
+	N,		pst_paletted,			XXX,	3EJ,	"-1"	=>	TOWNIE_UPPER_CLASS_FEMALE_PST
+	N,		pst_paletted,			XXX,	3BL,	"-1"	=>	TOWNIE_UPPER_CLASS_MALE_PST
+	N,		pst_paletted,			XXX,	3EI,	"-1"	=>	TOWNIE_WIZARD_PST
+	N,		pst_paletted,			XXX,	3BG,	"-1"	=>	THUG_PST
+	N,		pst_paletted,			XXX,	3AX,	"-1"	=>	THUG_LARGE_PST
+END
