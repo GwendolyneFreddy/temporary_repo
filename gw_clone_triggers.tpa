@@ -84,16 +84,16 @@ BEGIN
 	OUTER_SET GW_are_entrance_size          = 0x68	// Size of entrances section
 	OUTER_SET GW_are_container_size         = 0xc0	// Size of containers section
 	OUTER_SET GW_are_itm_size               = 0x14	// Size of items section
-	OUTER_SET GW_are_vertex_size            = 0x04	// Size of vertices section					- size of one set of X, Y coordinates
+	OUTER_SET GW_are_vertex_size            = 0x04	// Size of vertices section                 - size of one set of X, Y coordinates
 	OUTER_SET GW_are_ambient_size           = 0xd4	// Size of ambients section
-	OUTER_SET GW_are_variable_size          = 0x54	// Size of variables section				- not used in PS:T ou 0x50 IESPD
+	OUTER_SET GW_are_variable_size          = 0x54	// Size of variables section                - not used in PS:T ou 0x50 IESPD
 	OUTER_SET GW_are_door_size              = 0xc8	// Size of doors section
 	OUTER_SET GW_are_animation_size         = 0x4c	// Size of animations section
-	OUTER_SET GW_are_til_size               = 0x6c	// Size of tiled objects section 0			- not used in PS:T
-	OUTER_SET GW_are_song_size              = 0x90	// Size of songs section					- no count, offset only
-	OUTER_SET GW_are_rest_size              = 0xe4	// Size of rest interruptions				- no count, offset only
-	OUTER_SET GW_are_mapnote_size           = 0x34	// Size of  Automap notes section			- not used in PS:T ?
-	OUTER_SET GW_are_project_size           = 0x1a	// Size of Projectile Traps section			- only used in BG2? or 0x1C IESDP ??? waiting for Avenger answer to validate it.
+	OUTER_SET GW_are_til_size               = 0x6c	// Size of tiled objects section 0          - not used in PS:T
+	OUTER_SET GW_are_song_size              = 0x90	// Size of songs section                    - no count, offset only
+	OUTER_SET GW_are_rest_size              = 0xe4	// Size of rest interruptions               - no count, offset only
+	OUTER_SET GW_are_mapnote_size           = 0x34	// Size of  Automap notes section           - not used in PS:T ?
+	OUTER_SET GW_are_project_size           = 0x1a	// Size of Projectile Traps section         - only used in BG2? or 0x1C IESDP ??? waiting for Avenger answer to validate it.
 // File header
 	OUTER_SET GW_are_wed_of                 = 0x008 // Area WED
 	OUTER_SET GW_are_flag1_of               = 0x014 /* Area flag (AREAFLAG.IDS) = BIT0: Save allowed - BIT1: Tutorial area (not BG1) - BIT2: Dead magic zone - BIT3: Dream
@@ -132,27 +132,27 @@ BEGIN
 	OUTER_SET GW_are_vertices_nb            = 0x080	// Count of vertices
 	OUTER_SET GW_are_ambients_nb            = 0x082	// Count of ambients
 	OUTER_SET GW_are_ambients_of            = 0x084	// Offset to ambients
-	OUTER_SET GW_are_variables_of           = 0x088	// Offset to variables						- not used in PS:T
-	OUTER_SET GW_are_variables_nb           = 0x08c	// Count of variables						- not used in PS:T
+	OUTER_SET GW_are_variables_of           = 0x088	// Offset to variables                      - not used in PS:T
+	OUTER_SET GW_are_variables_nb           = 0x08c	// Count of variables                       - not used in PS:T
 /*	OUTER_SET GW_are_tiled_object_flag_of   = 0x090	// Offset to tiled object flags
 	OUTER_SET GW_are_tiled_object_flag_nb   = 0x092	// Count of tiled object flags */
 	OUTER_SET GW_are_script_of              = 0x094	// Area script
-/*	OUTER_SET GW_are_explored_size          = 0x09c	// Size of explored bitmask section			- not applicable	- no count, offset only
-	OUTER_SET GW_are_explored_of            = 0x0a0	// Offset to explored bitmask				- no count, offset only
+/*	OUTER_SET GW_are_explored_size          = 0x09c	// Size of explored bitmask section         - not applicable    - no count, offset only
+	OUTER_SET GW_are_explored_of            = 0x0a0	// Offset to explored bitmask               - no count, offset only
 */	OUTER_SET GW_are_doors_nb               = 0x0a4	// Count of doors
 	OUTER_SET GW_are_doors_of               = 0x0a8	// Offset to doors
 	OUTER_SET GW_are_door_string_of         = 0x98	// Offset to Lockpick string : SPECIAL (used by homemade functions to avoid lines of codes)
 	OUTER_SET GW_are_animations_nb          = 0x0ac	// Count of animations
 	OUTER_SET GW_are_animations_of          = 0x0b0	// Offset to animation
-	OUTER_SET GW_are_tiles_nb               = 0x0b4	// Count of tiled objects					- not used in PS:T
-	OUTER_SET GW_are_tiles_of               = 0x0b8	// Offset to tiled objects					- not used in PS:T
-	OUTER_SET GW_are_songs_of               = 0x0bc	// Offset to song entries					- no count, offset only
-	OUTER_SET GW_are_rest_of                = 0x0c0	// Offset to rest interruptions				- no count, offset only
-	OUTER_SET GW_are_mapnotes_of            = 0x0c4	// Offset of the automap notes section		- not used in PS:T = 0xFFFFFFFF
-	OUTER_SET GW_are_mapnotes_nb            = 0x0c8	// Count of the automap notes section		- Ps:T = Offset of the automap note section
+	OUTER_SET GW_are_tiles_nb               = 0x0b4	// Count of tiled objects                   - not used in PS:T
+	OUTER_SET GW_are_tiles_of               = 0x0b8	// Offset to tiled objects                  - not used in PS:T
+	OUTER_SET GW_are_songs_of               = 0x0bc	// Offset to song entries                   - no count, offset only
+	OUTER_SET GW_are_rest_of                = 0x0c0	// Offset to rest interruptions             - no count, offset only
+	OUTER_SET GW_are_mapnotes_of            = 0x0c4	// Offset of the automap notes section      - not used in PS:T = 0xFFFFFFFF
+	OUTER_SET GW_are_mapnotes_nb            = 0x0c8	// Count of the automap notes section       - Ps:T = Offset of the automap note section
 	OUTER_SET GW_are_note_string_of         = 0x04 	// Note text (dialog.tlk or TOH/TOT file) : SPECIAL (used by homemade functions to avoid lines of codes)
-	OUTER_SET GW_are_proj_traps_of          = 0x0cc	// Offset to the Projectile Traps section	- Ps:T = Number of entries in the automap note section
-	OUTER_SET GW_are_proj_traps_nb          = 0x0d0	// Count of the Projectile Traps section	- only used in BG2?
+	OUTER_SET GW_are_proj_traps_of          = 0x0cc	// Offset to the Projectile Traps section   - Ps:T = Number of entries in the automap note section
+	OUTER_SET GW_are_proj_traps_nb          = 0x0d0	// Count of the Projectile Traps section    - only used in BG2?
 	OUTER_SET GW_are_rest_movie_Day_of      = 0x0d4	// BG2: ToB, BGEE - Rest movie (day)
 	OUTER_SET GW_are_rest_movie_Night_of    = 0x0dc	// BG2: ToB, BGEE - Rest movie (night)
 
@@ -199,24 +199,24 @@ DEFINE_PATCH_FUNCTION ~GW_READ_AREA_STRUCTURE~
         GW_are_vertices_num     // Count of vertices
         GW_are_ambients_num     // Count of ambients
         GW_are_ambients_off     // Offset to ambients
-        GW_are_variables_off	// Offset to variables						- not used in PS:T
-        GW_are_variables_num	// Count of variables						- not used in PS:T
+        GW_are_variables_off	// Offset to variables                      - not used in PS:T
+        GW_are_variables_num	// Count of variables                       - not used in PS:T
         GW_are_script           // Area script
-//        GW_are_explored_off     // Offset to explored bitmask				- no count, offset only | Unused for the moment
+//        GW_are_explored_off     // Offset to explored bitmask               - no count, offset only | Unused for the moment
         GW_are_doors_num        // Count of doors
         GW_are_doors_off        // Offset to doors
         GW_are_animations_num	// Count of animations
         GW_are_animations_off	// Offset to animation
 /*        GW_are_tiles_flag_off	// Offset to tiled object flags                                     | Unused for the moment
         GW_are_tiles_flag_num	// Count of tiled object flags                                      | id.*/
-        GW_are_tiles_num        // Count of tiled objects					- not used in PS:T
-        GW_are_tiles_off        // Offset to tiled objects					- not used in PS:T
+        GW_are_tiles_num        // Count of tiled objects                   - not used in PS:T
+        GW_are_tiles_off        // Offset to tiled objects                  - not used in PS:T
         GW_are_songs_off        // Offset to song entries
         GW_are_rest_off         // Offset to rest interruptions
-        GW_are_mapnotes_off     // Offset of the automap notes section		- not used in PS:T : 0xFFFFFFFF
-        GW_are_mapnotes_num     // Count of the automap notes section		- not used in PS:T
-        GW_are_proj_traps_off   // Offset to the Projectile Traps section	- only used in BG2?
-        GW_are_proj_traps_num   // Count of the Projectile Traps section	- only used in BG2?
+        GW_are_mapnotes_off     // Offset of the automap notes section      - not used in PS:T : 0xFFFFFFFF
+        GW_are_mapnotes_num     // Count of the automap notes section       - not used in PS:T
+        GW_are_proj_traps_off   // Offset to the Projectile Traps section   - only used in BG2?
+        GW_are_proj_traps_num   // Count of the Projectile Traps section    - only used in BG2?
         GW_are_movie_Day        // BG2: ToB - Rest movie (day)
         GW_are_movie_Night      // BG2: ToB - Rest movie (night)
 BEGIN
@@ -251,27 +251,27 @@ BEGIN
 	READ_SHORT GW_are_vertices_nb           GW_are_vertices_num         // Count of vertices
 	READ_SHORT GW_are_ambients_nb           GW_are_ambients_num         // Count of ambients
 	READ_LONG  GW_are_ambients_of           GW_are_ambients_off         // Offset to ambients
-	READ_LONG  GW_are_variables_of          GW_are_variables_off        // Offset to variables						- not used in PS:T
-	READ_LONG  GW_are_variables_nb          GW_are_variables_num        // Count of variables						- not used in PS:T
+	READ_LONG  GW_are_variables_of          GW_are_variables_off        // Offset to variables                      - not used in PS:T
+	READ_LONG  GW_are_variables_nb          GW_are_variables_num        // Count of variables                       - not used in PS:T
 	READ_ASCII GW_are_script_of             GW_are_script (8) NULL      // Area script
-//	READ_LONG  GW_are_explored_of           GW_are_explored_off         // Offset to explored bitmask				- no count, offset only
-//	SET GW_are_explo_num	= 1                                         // Only 1 Explored Bitmap section per area	- This isn't really needed.
+//	READ_LONG  GW_are_explored_of           GW_are_explored_off         // Offset to explored bitmask               - no count, offset only
+//	SET GW_are_explo_num	= 1                                         // Only 1 Explored Bitmap section per area  - This isn't really needed.
 	READ_LONG  GW_are_doors_nb              GW_are_doors_num            // Count of doors
 	READ_LONG  GW_are_doors_of              GW_are_doors_off            // Offset to doors
 	READ_LONG  GW_are_animations_nb         GW_are_animations_num       // Count of animations
 	READ_LONG  GW_are_animations_of         GW_are_animations_off       // Offset to animation
 /*	READ_SHORT GW_are_tiled_object_flag_of	GW_are_tiles_obj_flag_off   // Offset to tiled object flags
 	READ_SHORT GW_are_tiled_object_flag_nb	GW_are_tiles_obj_flag_num   // Count of tiled object flags */
-	READ_LONG  GW_are_tiles_nb              GW_are_tiles_num            // Count of tiled objects					- not used in PS:T
-	READ_LONG  GW_are_tiles_of              GW_are_tiles_off            // Offset to tiled objects					- not used in PS:T
-//	SET GW_are_song_num		= 1                                         // Only 1 song section per area				- This isn't really needed.
+	READ_LONG  GW_are_tiles_nb              GW_are_tiles_num            // Count of tiled objects                   - not used in PS:T
+	READ_LONG  GW_are_tiles_of              GW_are_tiles_off            // Offset to tiled objects                  - not used in PS:T
+//	SET GW_are_song_num		= 1                                         // Only 1 song section per area             - This isn't really needed.
 	READ_LONG  GW_are_songs_of              GW_are_songs_off            // Offset to song entries
-//	SET GW_are_rest_num		= 1                                         // Only 1 rest section per area				- This isn't really needed.
+//	SET GW_are_rest_num		= 1                                         // Only 1 rest section per area             - This isn't really needed.
 	READ_LONG  GW_are_rest_of               GW_are_rest_off             // Offset to rest interruptions
-	READ_LONG  GW_are_mapnotes_of           GW_are_mapnotes_off         // Offset of the automap notes section		- not used in PS:T : 0xFFFFFFFF
-	READ_LONG  GW_are_mapnotes_nb           GW_are_mapnotes_num         // Count of the automap notes section		- not used in PS:T
-	READ_LONG  GW_are_proj_traps_of         GW_are_proj_traps_off       // Offset to the Projectile Traps section	- only used in BG2?
-	READ_LONG  GW_are_proj_traps_nb         GW_are_proj_traps_num       // Count of the Projectile Traps section	- only used in BG2?
+	READ_LONG  GW_are_mapnotes_of           GW_are_mapnotes_off         // Offset of the automap notes section      - not used in PS:T : 0xFFFFFFFF
+	READ_LONG  GW_are_mapnotes_nb           GW_are_mapnotes_num         // Count of the automap notes section       - not used in PS:T
+	READ_LONG  GW_are_proj_traps_of         GW_are_proj_traps_off       // Offset to the Projectile Traps section   - only used in BG2?
+	READ_LONG  GW_are_proj_traps_nb         GW_are_proj_traps_num       // Count of the Projectile Traps section    - only used in BG2?
 	READ_ASCII GW_are_rest_movie_Day_of     GW_are_movie_Day (8) NULL   // BG2: ToB - Rest movie (day)
 	READ_ASCII GW_are_rest_movie_Night_of   GW_are_movie_Night (8) NULL // BG2: ToB - Rest movie (night)
 
@@ -820,7 +820,6 @@ BEGIN
 			// Optional: Whether the trap is detected (0=no, 1=yes). Default is to use the original.
 			SET fj_trap_status = (GW_trap_status <0) ? fj_trap_status : GW_trap_status
 
-
 			// Optional: Entrance name in the destination area (for travel regions). By default, the function uses whatever is in the original.
 			PATCH_IF ("%GW_entrance_new%" STR_CMP "same") BEGIN
 				SPRINT fj_destination_name EVAL "%GW_entrance_new%"
@@ -837,8 +836,8 @@ BEGIN
 			END
 
 
-			// 2.2.3. On stocke les variables du trigger pour le cloner.
-			// ---------------------------------------------------------
+			// 2.2.4. On stocke les variables du trigger pour le cloner. - Memorize region settings before cloning.
+			// ----------------------------------------------------------------------------------------------------
 			SPRINT GW_add_trigger "LPF ~ADD_AREA_REGION_TRIGGER~ INT_VAR ab_RT_Type = %fj_type% ab_RT_BbLX = %fj_box_left% ab_RT_BbLY = %fj_box_top% ab_RT_BbHX = %fj_box_right% ab_RT_BbHY = %fj_box_bottom% ab_RT_VxPr = %gw_reg_nb_vertices% ab_RT_CuId = %fj_cursor_idx% ab_RT_Fbit = %fj_flags% ab_RT_Itxt = ~%fj_info_point_strref%~ ab_RT_TDtD = %fj_trap_detect% ab_RT_TRmD = %fj_trap_remove% ab_RT_TSet = %fj_trap_active% ab_RT_TDet = %fj_trap_status% ab_RT_LPoX = %fj_loc_x% ab_RT_LPoY = %fj_loc_y% ab_RT_ALPX = %fj_alt_x% ab_RT_ALPY = %fj_alt_y% %GW_ab_RT_Vx%"
 //PATCH_PRINT "%GW_add_trigger%"
 			SPRINT GW_add_trigger EVAL "%GW_add_trigger% STR_VAR ab_RT_Name = %GW_region_new%"
@@ -847,13 +846,15 @@ BEGIN
 			END
 //PATCH_PRINT "%GW_add_trigger%"
 
-			// Cas particulier : si la variable %fj_key_resref% est vide, on ne la prend pas un compte pour éviter à la fonction ADD_AREA_TRIGGER de bugger.
+			// Cas particulier : si la variable %fj_key_resref% est vide, on ne la prend pas en compte pour éviter à la fonction ADD_AREA_TRIGGER de bugger.
+			// Special case: discard %fj_key_resref% variable if empty to avoid ADD_AREA_TRIGGER function to fail.
 			PATCH_IF ("%fj_key_resref%" STRING_COMPARE_CASE "") BEGIN
 				SPRINT GW_add_trigger EVAL "%GW_add_trigger% ab_RT_KeyI = %fj_key_resref%"
 			END
 //PATCH_PRINT "%GW_add_trigger%"
 
-			// Cas particulier : si la variable %script% est vide, on ne la prend pas un compte pour éviter à la fonction ADD_AREA_TRIGGER de bugger.
+			// Cas particulier : si la variable %fj_reg_script% est vide, on ne la prend pas en compte pour éviter à la fonction ADD_AREA_TRIGGER de bugger.
+			// Special case: discard %fj_reg_script% variable if empty to avoid ADD_AREA_TRIGGER function to fail.
 			PATCH_IF("%fj_reg_script%" STRING_COMPARE_CASE "") BEGIN
 				SPRINT GW_add_trigger EVAL "%GW_add_trigger% ab_RT_Rbcs = %fj_reg_script%"
 			END
@@ -863,25 +864,15 @@ BEGIN
 //PATCH_PRINT "%GW_add_trigger%"
 
 
-			// 2.2.4. On clone le trigger.
-			// ---------------------------
+			// 2.2.5. On clone le trigger. - At last, we clone the trigger.
+			// ------------------------------------------------------------
 			LPF ~GW_REINCLUDE~ STR_VAR GW_input = EVAL ~%GW_add_trigger%~ END
 
 		END	ELSE BEGIN
-			PATCH_PRINT "Region %GW_region% not found in %GW_Area%"
+			PATCH_PRINT "Region %GW_region_old% and destination %GW_dest_old% not found in area file."
 			PATCH_SILENT
 		END	// of PATCH_IF (GW_clone_trigger)
 
-	END // of 	PATCH_IF GW_run_function BEGIN
+	END // of PATCH_IF GW_run_function BEGIN
 
-END					// of DEFINE_PATCH_FUNCTION
-
-
-/*    STR_VAR GW_region_old   = ""     // Optional: Region's name to clone. By default, the function uses the first trigger found for the given destination (GW_dest_old). Either region destination or name must be provided.
-            GW_region_new   = ""     // Required: New cloned region's name.
-            GW_dest_old     = ""     // Optional: Carte de destination à trouver (destination area to found). By default, the function uses the one that matches the passed name (GW_region_old).
-            GW_dest_new     = ""     // Required: Carte de destination du trigger cloné (destination area for the new travel trigger).
-            GW_entrance_new = "same" // Optional: Entrance name in the destination area (for travel regions). By default, the function uses whatever is in the original.
-            GW_key_new      = "same" // Optional: Filename of the region’s key. Default is to use the original.
-            GW_script_new   = "same" // Optional: Filename of the Region script. Default is to use the original.
-*/
+END // of DEFINE_PATCH_FUNCTION
