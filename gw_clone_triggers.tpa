@@ -60,7 +60,7 @@ BEGIN
 		>>>>>>>>
 		COPY - temp_file ~temp_file2~ EVALUATE_BUFFER
 	END
-	PATCH_PRINT ~%GW_input%~
+//	PATCH_PRINT ~%GW_input%~
 	PATCH_REINCLUDE ~temp_file2~
 
 END	// of DEFINE_PATCH_FUNCTION
@@ -442,7 +442,7 @@ BEGIN
 				PATCH_IF (ofs < 0) BEGIN SET ofs = len_flags END
 				READ_ASCII curOfs bit (ofs - curOfs)
 				TEXT_SPRINT EVAL ~flag_%flags%~ ~%bit%~
-				PATCH_PRINT "DEBUG CONTROL bit = %bit%"
+//				PATCH_PRINT "DEBUG CONTROL bit = %bit%"
 				SET flags += 1
 				SET curOfs = ofs + 1
 			END
