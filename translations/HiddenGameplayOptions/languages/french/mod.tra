@@ -1,0 +1,213 @@
+// -*- coding: utf-8 -*-
+
+// *** Game options ***
+
+@1000 = ~Activer le Mode débogage~
+@1001 = ~Permet d'activer/désactiver les raccourcis clavier de triche et le panneau de débogage.
+
+Utilisez le raccourci clavier CTRL+Espace pour faire apparaître le panneau. Quelques commandes utiles : ^PC:AddGold(nombre)^-, ^PC:CreateItem("nom")^-, ^PC:SetCurrentXP(nombre)^-, parmi d'autres.
+
+Les raccourcis de triche comprennent CTRL+Y pour tuer instantanément une créature pointée par le curseur de la souris, CTRL+R pour guérir et supprimer tous les effets affectant la créature pointée par le curseur de la souris, CTRL+J pour téléporter les membres du groupe sélectionnés à l'emplacement de la carte désigné par le curseur, CTRL+T pour faire avancer le temps de jeu d'une heure, CTRL+4 pour visualiser les régions interactives (sorties de zone, messages d'informations, conteneurs...), et bien d'autres fonctions.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@1100 = ~Activer le Mode de modification de l'interface utilisateur (UI)~
+@1101 = ~Permet d'utiliser les fonctions de modifications de l'UI dans le jeu.
+
+Appuyez sur la touche F11 pour activer ou désactiver le mode de modification de l'UI. Quand il est actif, vous pouvez faire glisser et positionner les éléments de l'interface où vous voulez sur l'écran. Appuyez sur F5 pour pré-visualiser les changements sans redémarrer le jeu. Appuyer sur TAB en pointant un élément de l'UI affiche le numéro de ligne du fichier UI.MENU contenant ses paramètres.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@1200 = ~Afficher les numéros des textes~
+@1201 = ~Activer cette option indique devant chaque texte affiché dans le jeu son numéro de référence.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@1300 = ~Afficher les raccourcis clavier dans les bulles d'aide~
+@1301 = ~Activer cette option affiche les touches de raccourci dans les bulles d'aide des boutons de l'interface (capacités des sorts et des objets rapides lorsqu'ils sont disponibles, boutons de la barre verticale de gauche...). Attention : les boutons de la barre verticale de droite n'en bénéficient pas.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@1400 = ~Afficher les icônes de zone sensible avec la tabulation~
+@1401 = ~Affiche des informations supplémentaires sur les régions interactives de la zone en appuyant sur la touche TAB.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@1500 = ~Utiliser la barre d'espace dans les dialogues~
+@1501 = ~Activer cette option vous permet de continuer les conversations dans la fenêtre de dialogue en utilisant la touche ESPACE.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@1600 = ~Limiter les sorts de druide pour les Prêtres/Rôdeurs~
+@1601 = ~Cette option contrôle le choix des sorts de druide disponibles pour les personnages multi-classés ou jumelés Prêtres/Rôdeurs.
+
+L'activer limite au niveau 3 les sorts de druide utilisables par les rôdeurs. Les sorts de prêtre ne sont pas affectés.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@1700 = ~Attaque sournoise 3e Édition~
+@1701 = ~Active/désactive l'Attaque sournoise (Attaque insidieuse) et l'Attaque handicapante (capacités similaires à celles de la troisième Édition de Donjons et Dragons® de Wizards of the Coast).
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@1800 = ~Secouer l'écran en cas de coup critique~
+@1801 = ~Si cette option est activée, l'écran est secoué chaque fois qu'un membre du groupe effectue un coup critique.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@1900 = ~Informations de combat supplémentaires~
+@1901 = ~Active/désactive l'affichage dans la fenêtre de dialogue de tous les facteurs déterminant les résultats des jets d'attaque.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@2000 = ~Afficher la date et l'heure du jeu pendant les pauses~
+@2001 = ~Affiche la date et l'heure du jeu lorsque la pause est activée.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@2100 = ~Désactiver le zoom dans la vue de la carte~
+@2101 = ~Désactive le zoom avant et arrière lorsqu'on ouvre ou ferme l'écran de la carte de la zone.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@2200 = ~Inverser le zoom de la molette de la souris~
+@2201 = ~Inverse le sens du zoom déclenché par la molette de la souris.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@2300 = ~Mettre le jeu en pause dans l'écran de la carte de la zone~
+@2301 = ~Met automatiquement le jeu en pause chaque fois que l'on ouvre l'écran de la carte de la zone.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@2400 = ~Activer le brouillard~
+@2401 = ~Active les effets de brouillard dans les zones.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@2500 = ~Désactiver les films~
+@2501 = ~Permet de désactiver le visionnage des films.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@2600 = ~Aucune attaque cosmétique~
+@2601 = ~Les animations des attaques n'apparaissent que quand les personnages attaquent réellement. Aucune animation d'attaque n'apparaît pendant les feintes et les esquives.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@2700 = ~Bonus d'expérience en mode Succession de Bhaal~
+@2701 = ~Activer cette option permet à vos personnages d'obtenir le bonus d'expérience inhérent au mode Succession de Bhaal Elle n'affecte pas le bonus d'expérience acquis grâce aux modes de difficulté normaux.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@2710 = ~Bonus d'expérience en mode Cœur de furie~
+@2711 = ~Activer cette option permet à vos personnages d'obtenir le bonus d'expérience inhérent au mode Cœur de furie. Elle n'affecte pas le bonus d'expérience acquis grâce aux modes de difficulté normaux.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@2800 = ~Nombre d'images par seconde~
+@2801 = ~Ce curseur vous permet d'augmenter le nombre d'images par seconde affichées par le jeu, permettant ainsi d'accélérer tous les aspects du jeu.
+
+ATTENTION : définir le nombre d'images par seconde au-dessus de 30 peut provoquer des problèmes de synchronisation audio pendant les cinématiques et décaler les effets de certains sorts pendant les combats.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+@2802 = ~30 images / seconde~
+@2803 = ~40 images / seconde~
+@2804 = ~50 images / seconde~
+@2805 = ~60 images / seconde~
+
+@2900 = ~Feedback d'action~
+@2901 = ~Ce curseur permet de décider si, ou quand, les actions qu'effectue un personnage sont affichées sous forme de petites icônes autour de son sprite.
+  Désactivé : jamais.
+  Bas : concerne seulement les alliés quand le jeu est en pause.
+  Moyen : concerne seulement les alliés.
+  Haut* : concerne toutes les créatures quand le jeu est en pause.
+  Maximum* : concerne toutes les créatures.
+
+(*) Ne fonctionne que si le mode débogage est activé.
+
+Note : Vous devez redémarrer le jeu pour que les modifications prennent effet.~
+@2902 = ~Ce curseur permet de décider si, ou quand, les actions qu'effectue un personnage sont affichées sous forme de petites icônes autour de son sprite.
+  Désactivé : jamais.
+  Bas : concerne seulement les alliés quand le jeu est en pause.
+  Moyen : concerne seulement les alliés.
+  Haut* : concerne toutes les créatures quand le jeu est en pause.
+  Maximum* : concerne toutes les créatures.
+
+(*) Ne fonctionne que si le mode débogage est activé.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+@2903 = ~Désactivé~
+@2904 = ~Bas~
+@2905 = ~Moyen~
+@2906 = ~Haut*~
+@2907 = ~Maximum*~
+
+@3000 = ~Afficher l'icône de passage au niveau supérieur~
+@3001 = ~Afficher ou non l'icône de "passage au niveau supérieur" sur le portrait ou sur la barre de santé des membres de votre groupe prêts à gagner un niveau.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@3100 = ~Sons d'ennui~
+@3101 = ~Entendre les sons d'ennui des personnages~
+@3102 = ~Entendre les sons d'ennui après une longue période d'inactivité.
+
+Note : Vous devez redémarrer le jeu pour que les modifications prennent effet.~
+@3103 = ~Cette option permet de contrôler si les membres du groupe émettent des sons d'ennui après une longue période d'inactivité.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@3200 = ~Afficher la portée des zones d'effet des sorts~
+@3201 = ~Activer cette option affiche la portée de la zone d'effet d'un sort avant de le lancer.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@3300 = ~Recherche d'itinéraire améliorée~
+@3301 = ~Activer cette option améliore la recherche d'itinéraires en recalculant en permanence le meilleur itinéraire disponible pour les personnages.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@3400 = ~Faire disparaître la surbrillance des pièges~
+@3401 = ~Activer cette option permet de faire disparaître au bout d'un moment la surbrillance des pièges et des portes secrètes détectés.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@3500 = ~Afficher les sorts à apprendre~
+@3501 = ~Activer cette option permet de colorer légèrement en vert les parchemins de sorts que le personnage peut écrire dans son livre de sorts.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@3600 = ~Afficher la carte des déplacements~
+@3601 = ~Activer cette option permet d'afficher la carte des déplacements de la zone en appuyant sur la touche MAJ.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@3700 = ~Afficher la carte dynamique des obstacles~
+@3701 = ~Activer cette option permet d'afficher les obstacles dans une zone (comme les passages de porte bloqués ou l'espace qu'occupent les créatures) en appuyant sur la touche CTRL.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@3800 = ~Activer les sauvegardes périodiques~
+@3801 = ~Permet de sauvegarder le jeu à des intervalles réguliers. Ce réglage nécessite l'installation du composant "Créer des sauvegardes périodiques" du mod Tweaks Anthology.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@3810 = ~Créer des sauvegardes périodiques pendant les combats~
+@3811 = ~Permet de créer des sauvegardes périodiques même pendant les combats. Ce réglage nécessite l'installation du composant "Créer des sauvegardes périodiques" du mod Tweaks Anthology.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+@3900 = ~Forcer la mise en pause pendant les dialogues~
+@3901 = ~Activer cette option oblige le jeu à se mettre en pause pendant la conduite des dialogues.
+
+^NNote : Vous devez redémarrer le jeu pour que les modifications prennent effet.^-~
+
+
+// *** Misc. strings ***
+
+@10000 = ~Attaque insidieuse~
+@10001 = ~Attaque insidieuse inefficace~
+@10002 = ~Attaque handicapante~
+@10003 = ~Cette arme ne peut être utilisée pour une attaque insidieuse.~
+@10004 = ~Dégâts d'attaque insidieuse~
+@10005 = ~Attaque handicapante~
